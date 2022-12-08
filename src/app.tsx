@@ -1,13 +1,19 @@
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import type { MenuDataItem, Settings as LayoutSettings } from '@ant-design/pro-components';
 import { PageLoading, SettingDrawer } from '@ant-design/pro-components';
 import { notification } from 'antd';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from '@/services/user';
+import { getAdminMenu } from '@/services/adminMenu';
+import { message } from 'antd';
+
+import 'antd/dist/antd.css';
+import '@zerocmf/antd-form/dist/style.css';
+import { createRef } from 'react';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -30,9 +36,31 @@ const codeMessage = {
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
+export const layoutActionRef = createRef<{ reload: () => void }>();
+
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
   loading: <PageLoading />,
+};
+
+const Icon = (props: any) => {
+  let { icon } = props;
+  if (!icon) icon = 'iconsetting';
+  return (
+    <span className="anticon">
+      <i className={`iconfont ${icon}`} />
+    </span>
+  );
+};
+
+const loopMenuItem: any = (menus: MenuDataItem[] | { icon: any; children: any }[]) => {
+  return menus.map(({ icon = '', children, ...item }) => {
+    return {
+      ...item,
+      icon: <Icon icon={icon} />,
+      children: children && loopMenuItem(children),
+    };
+  });
 };
 
 /**
@@ -43,11 +71,11 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchMenus?: () => any;
 }> {
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
-      console.log('msg', msg);
       return msg.data;
     } catch (error) {
       console.log('error', error);
@@ -55,12 +83,16 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+
+  const fetchMenus = async () => {
+    layoutActionRef.current?.reload();
+  };
   // 如果不是登录页面，执行
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
-    console.log('currentUser', currentUser);
     return {
       fetchUserInfo,
+      fetchMenus,
       currentUser,
       settings: defaultSettings,
     };
@@ -72,12 +104,12 @@ export async function getInitialState(): Promise<{
 }
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
-export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
+export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: any) => {
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: false,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -124,6 +156,25 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         </>
       );
     },
+    actionRef: layoutActionRef,
+    menu: {
+      params: {
+        userId: initialState?.currentUser?.id,
+      },
+      request: async (params = {}) => {
+        // initialState.currentUser 中包含了所有用户信息
+        const { userId } = params;
+        if (userId) {
+          const result = await getAdminMenu();
+          if (result.code === 1) {
+            setInitialState((s: any) => ({ ...s, menus: result.data }));
+            return result.data;
+          }
+          message.error(result.msg);
+        }
+      },
+    },
+    menuDataRender: (menuData: MenuDataItem[]) => loopMenuItem(menuData),
     ...initialState?.settings,
   };
 };

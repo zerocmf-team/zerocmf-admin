@@ -40,13 +40,56 @@ export default {
   'menu.exception.not-find': '404',
   'menu.exception.server-error': '500',
   'menu.exception.trigger': '触发错误',
-  'menu.account': '个人页',
-  'menu.account.center': '个人中心',
-  'menu.account.settings': '个人设置',
-  'menu.account.trigger': '触发报错',
-  'menu.account.logout': '退出登录',
-  'menu.editor': '图形编辑器',
-  'menu.editor.flow': '流程编辑器',
-  'menu.editor.mind': '脑图编辑器',
-  'menu.editor.koni': '拓扑编辑器',
+
+  'menu.settings': '系统设置',
+  'menu.settings.websites': '站点设置',
+  'menu.settings.websites.detail': '站点详情',
+
+  'menu.settings.upload': '上传设置',
+  'menu.settings.upload.detail': '上传详情',
+
+  'menu.settings.assets': '素材管理',
+  'menu.settings.assets.list': '素材列表',
+
+  'menu.settings.menu': '菜单管理',
+  'menu.settings.menu.list': '菜单列表',
+
+  'menu.account': '账号管理',
+  'menu.account.role': '角色设置',
+  'menu.account.role.list': '角色列表',
+  'menu.account.role.add': '新增角色',
+  'menu.account.role.edit': '编辑角色',
+
+  'menu.account.user': '管理员',
+  'menu.account.user.list': '管理员列表',
+  'menu.account.user.add': '添加管理员',
+  'menu.account.user.edit': '编辑管理员',
+
+  'menu.account.department': '部门设置',
+  'menu.account.department.list': '部门列表',
+  'menu.account.department.add': '添加部门',
+  'menu.account.department.edit': '编辑部门',
+
+  'menu.customer': '客户管理',
+  'menu.customer.member': '本站客户',
+  'menu.customer.member.list': '客户列表',
+
+  'menu.portal': '门户管理',
+  'menu.portal.article': '文章管理',
+  'menu.portal.article.list': '文章列表',
+  'menu.portal.article.add': '添加文章',
+  'menu.portal.article.edit': '编辑文章',
+
+  'menu.portal.category': '分类管理',
+  'menu.portal.category.list': '分类列表',
+  'menu.portal.category.add': '添加分类',
+  'menu.portal.category.edit': '编辑分类',
+
+  'menu.portal.page': '页面管理',
+  'menu.portal.page.list': '页面列表',
+  'menu.portal.page.add': '添加列表',
+  'menu.portal.page.edit': '编辑列表',
+
+  'menu.portal.tag': '标签管理',
+  'menu.portal.tag.list': '标签列表'
 };

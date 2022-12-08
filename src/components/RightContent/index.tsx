@@ -1,8 +1,6 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import React from 'react';
 import { SelectLang, useModel } from 'umi';
-import HeaderSearch from '../HeaderSearch';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
