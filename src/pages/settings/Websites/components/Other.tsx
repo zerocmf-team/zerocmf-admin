@@ -36,11 +36,6 @@ const Other = (props: propsType) => {
           <Form.Item name="open_registration" label="开启登录注册" valuePropName="checked">
             <Switch />
           </Form.Item>
-
-          <Form.Item label="静态CDN地址">
-            <Input />
-          </Form.Item>
-
           <Form.Item wrapperCol={buttonWrapperCol}>
             <Button htmlType="submit" type="primary">
               保存

@@ -25,23 +25,30 @@ export async function getData(id: number, params: any = {}) {
   });
 }
 
-export async function addData(params: any) {
+export async function addData(data: any) {
   return authRequest('/api/v1/user/admin/account', {
     method: 'POST',
-    data: params,
+    data,
   });
 }
 
-export async function editData(id: any, params: any) {
+export async function editData(id: any, data: any) {
   return authRequest(`/api/v1/user/admin/account/${id}`, {
     method: 'POST',
-    data: params,
+    data,
   });
 }
 
-export async function editAccount(id: any, params: any) {
+export async function editAccount(id: any, data: any = {}) {
   return authRequest(`/api/v1/user/admin/account/${id}`, {
     method: 'POST',
-    data: params,
+    data
+  });
+}
+
+export async function deleteAccount(id: any, data: any = {}) {
+  return authRequest(`/api/v1/user/admin/account/${id}`, {
+    method: 'DELETE',
+    data
   });
 }

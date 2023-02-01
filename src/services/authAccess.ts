@@ -14,9 +14,9 @@ export async function addData(params: any) {
     });
 }
 
-export async function editData(id: number, params: any = {}) {
+export async function editData(id: number, data: any = {}) {
     return authRequest(`/api/v1/user/admin/auth_access/${id}`, {
         method: 'POST',
-        data: params,
+        data,
     });
 }

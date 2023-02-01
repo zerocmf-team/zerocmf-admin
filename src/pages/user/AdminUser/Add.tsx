@@ -1,14 +1,12 @@
-import { Card, Form, message } from 'antd';
+import { message } from 'antd';
 import { history } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { addData } from '@/services/user';
 import UserForm from './components/form';
 
 const Index = () => {
-  const [form] = Form.useForm();
-
-  const onSubmit = async () => {
-    const formValues = form.getFieldsValue();
+  const onFinish = async (formValues: any) => {
+    console.log('add formValues', formValues);
     const result = await addData(formValues);
     if (result.code === 1) {
       message.success(result.msg);
@@ -20,7 +18,7 @@ const Index = () => {
 
   return (
     <PageContainer>
-      <UserForm form={form} onSubmit={onSubmit} />
+      <UserForm onFinish={onFinish} />
     </PageContainer>
   );
 };

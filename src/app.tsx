@@ -78,7 +78,6 @@ export async function getInitialState(): Promise<{
       const msg = await queryCurrentUser();
       return msg.data;
     } catch (error) {
-      console.log('error', error);
       history.push(loginPath);
     }
     return undefined;
@@ -187,6 +186,8 @@ const authHeaderInterceptor = (url: string, options: RequestConfig) => {
       options.headers = {
         Authorization: `Bearer ${token.access_token}`,
       };
+    } else {
+      history.push(loginPath);
     }
   }
   return {

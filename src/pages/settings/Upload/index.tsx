@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Form, Input, Button, Row, Col, Tooltip, message, Spin, InputNumber } from 'antd';
+import { Card, Form, Input, Button, Row, Col, Tooltip, message, InputNumber } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { getUpload, updateUpload } from '@/services/upload';
 import { PageContainer } from '@ant-design/pro-components';

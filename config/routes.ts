@@ -90,6 +90,37 @@
           },
         ],
       },
+      {
+        name: 'login',
+        path: '/settings/login',
+        routes: [
+          {
+            path: './',
+            redirect: './list',
+          },
+          {
+            name: 'list',
+            path: 'list',
+            component: './settings/Login',
+            hideInMenu: true,
+            // access: 'rbac',
+          },
+          {
+            name: 'detail',
+            path: 'detail/mobile',
+            component: './settings/Login/detail/Mobile',
+            hideInMenu: true,
+            // access: 'rbac',
+          },
+          {
+            name: 'detail',
+            path: 'detail/wechat',
+            component: './settings/Login/detail/Wechat',
+            hideInMenu: true,
+            // access: 'rbac',
+          },
+        ]
+      }
     ],
   },
   {
@@ -120,6 +151,13 @@
             name: 'add',
             path: '/account/user/add',
             component: './user/AdminUser/Add',
+            hideInMenu: true
+            // access: 'rbac',
+          },
+          {
+            name: 'add',
+            path: '/account/user/edit/:id',
+            component: './user/AdminUser/Edit',
             hideInMenu: true
             // access: 'rbac',
           },

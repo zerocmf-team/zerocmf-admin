@@ -11,7 +11,7 @@ const layout = {
 
 const RoleForm = ({ form }: any) => {
   return (
-    <Form form={form} style={{ maxWidth: '500px' }} {...layout} name="basic">
+    <Form form={form} style={{ maxWidth: '500px' }} {...layout}>
       <Form.Item
         label="角色名称"
         name="name"

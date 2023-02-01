@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Tree, Card, Form, Button, message } from 'antd';
-import { history } from 'umi';
+import { history, useIntl } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getAuthorizes } from '@/services/authorize';
 import { getRole } from '@/services/role';
@@ -12,6 +12,7 @@ const Index = (props: any) => {
   const [treeData, setTreeData] = useState([]);
   const [values, setValues] = useState([]);
   const [form] = Form.useForm();
+  const intl = useIntl();
 
   useEffect(() => {
     async function featchData() {
@@ -38,23 +39,24 @@ const Index = (props: any) => {
   }, [form, roleId]);
 
   const onCheck = (checkedKeys: any) => {
-    const checkeds = checkedKeys.checked;
-    setValues(checkeds);
+    setValues(checkedKeys);
   };
 
   // 提交
   const onSubmit = async () => {
-    const formValues = form.getFieldsValue();
-    window.console.log(formValues, values);
+    const validate = await form.validateFields();
+    if (validate) {
+      const formValues = form.getFieldsValue();
+      window.console.log(formValues, values);
 
-    const result = await editData({
-      id: roleId,
-      ...formValues,
-      role_access: values,
-    });
+      const result = await editData(roleId, {
+        ...formValues,
+        role_access: values,
+      });
 
-    if (result.code === 1) {
-      message.success(result.msg);
+      if (result.code === 1) {
+        message.success(result.msg);
+      }
     }
   };
 
@@ -64,6 +66,11 @@ const Index = (props: any) => {
         <RoleForm form={form} />
         <div className="mb-3">
           <Tree
+            titleRender={(nodeData: any) => {
+              return intl.formatMessage({
+                id: nodeData.locale,
+              });
+            }}
             checkable
             checkedKeys={values}
             selectable={false}

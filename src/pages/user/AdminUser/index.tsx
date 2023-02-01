@@ -1,103 +1,111 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, history } from 'umi';
-import { Button, Divider, Popconfirm, Typography } from 'antd';
+import { Button, Divider, message, Popconfirm, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { getDatas } from '@/services/user';
+import { getDatas, deleteAccount } from '@/services/user';
 
 const { Text } = Typography;
 
-const columns: any = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    width: 100,
-    search: false,
-  },
-  {
-    title: '用户名',
-    dataIndex: 'user_login',
-  },
-  {
-    title: '邮箱',
-    dataIndex: 'user_email',
-  },
-  {
-    title: '最后登录IP',
-    dataIndex: 'last_loginip',
-    search: false,
-  },
-  {
-    title: '最后登录时间',
-    dataIndex: 'last_login_time',
-    search: false,
-    render: (text) => {
-      if (text === '0') {
-        return '-';
-      }
-      return text;
-    },
-  },
-  {
-    title: '创建时间',
-    key: 'create_time',
-    search: true,
-    width: 200,
-    dataIndex: 'create_time',
-    valueType: 'dateTime',
-  },
-  {
-    title: '操作',
-    valueType: 'option',
-    dataIndex: 'option',
-    width: 110,
-    render: (text, record, index) => {
-      if (index === 0) {
-        return (
-          <>
-            <Text disabled>编辑</Text>
-            <Divider type="vertical" />
-            <Text disabled>删除</Text>
-            {/* <Divider type="vertical" />
-            <Text disabled>拉黑</Text> */}
-          </>
-        );
-      }
-
-      return (
-        <>
-          <Link disbaled="true" to={`/account/user/edit/${record.id}`}>
-            编辑
-          </Link>
-          <Divider type="vertical" />
-          <Popconfirm
-            title="您确定删除吗?"
-            okText="确认"
-            cancelText="取消"
-            onConfirm={() => {}}
-            placement="topRight"
-          >
-            <a style={{ color: '#ff4d4f' }}>删除</a>
-          </Popconfirm>
-          {/* <Divider type="vertical" />
-          <Popconfirm
-            title="您确定拉黑吗?"
-            okText="确认"
-            cancelText="取消"
-            onConfirm={() => { }}
-            placement="topRight"
-          >
-            <a style={{ color: '#2C3E50' }}>拉黑</a>
-          </Popconfirm> */}
-        </>
-      );
-    },
-  },
-];
-
 const Index = () => {
   const [total, setTotal] = useState(0);
+
+  const tableRef = useRef<any>();
+
+  const columns: any = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      width: 100,
+      search: false,
+    },
+    {
+      title: '用户名',
+      dataIndex: 'user_login',
+    },
+    {
+      title: '邮箱',
+      dataIndex: 'user_email',
+    },
+    {
+      title: '最后登录IP',
+      dataIndex: 'last_loginip',
+      search: false,
+    },
+    {
+      title: '最后登录时间',
+      dataIndex: 'last_login_time',
+      search: false,
+      render: (text) => {
+        if (text === '0') {
+          return '-';
+        }
+        return text;
+      },
+    },
+    {
+      title: '创建时间',
+      key: 'create_time',
+      search: true,
+      width: 200,
+      dataIndex: 'create_time',
+      valueType: 'dateTime',
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      dataIndex: 'option',
+      width: 110,
+      render: (text, record, index) => {
+        if (index === 0) {
+          return (
+            <>
+              <Text disabled>编辑</Text>
+              <Divider type="vertical" />
+              <Text disabled>删除</Text>
+              {/* <Divider type="vertical" />
+              <Text disabled>拉黑</Text> */}
+            </>
+          );
+        }
+
+        return (
+          <>
+            <Link to={`/account/user/edit/${record.id}`}>编辑</Link>
+            <Divider type="vertical" />
+            <Popconfirm
+              title="您确定删除吗?"
+              okText="确认"
+              cancelText="取消"
+              onConfirm={async () => {
+                const res: any = await deleteAccount(record.id);
+                if (res.code == 1) {
+                  message.success(res.msg);
+                  tableRef.current.reload();
+                  return;
+                }
+                message.error(res.msg);
+              }}
+              placement="topRight"
+            >
+              <a style={{ color: '#ff4d4f' }}>删除</a>
+            </Popconfirm>
+            {/* <Divider type="vertical" />
+            <Popconfirm
+              title="您确定拉黑吗?"
+              okText="确认"
+              cancelText="取消"
+              onConfirm={() => { }}
+              placement="topRight"
+            >
+              <a style={{ color: '#2C3E50' }}>拉黑</a>
+            </Popconfirm> */}
+          </>
+        );
+      },
+    },
+  ];
 
   // 获取列表
   const getData = async (params: any) => {
@@ -113,6 +121,7 @@ const Index = () => {
   return (
     <PageContainer>
       <ProTable
+        actionRef={tableRef}
         columns={columns}
         rowKey="id"
         request={getData}

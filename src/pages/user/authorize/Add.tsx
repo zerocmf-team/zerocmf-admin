@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Tree, Card, Form, Button, message } from 'antd';
-import { history } from 'umi';
+import { history, useIntl } from 'umi';
 import { PageContainer } from '@ant-design/pro-components';
 import { getAuthorizes } from '@/services/authorize';
 import { addData } from '@/services/authAccess';
@@ -10,11 +10,12 @@ const Index = () => {
   const [treeData, setTreeData] = useState([]);
   const [values, setValues] = useState([]);
 
+  const intl = useIntl();
+
   useEffect(() => {
     async function featchData() {
       const result = await getAuthorizes();
       if (result.code === 1) {
-        window.console.log(result);
         setTreeData(result.data);
       }
     }
@@ -23,21 +24,22 @@ const Index = () => {
 
   const [form] = Form.useForm();
 
-  const onCheck: any = (checkedKeys: any, info: { halfCheckedKeys: any }) => {
-    const { halfCheckedKeys } = info;
-    const checks = checkedKeys.concat(halfCheckedKeys);
-    setValues(checks);
+  const onCheck: any = (checkedKeys: any) => {
+    setValues(checkedKeys);
   };
 
   const onSubmit = async () => {
-    const formValues = form.getFieldsValue();
-    window.console.log(formValues, values);
+    const validate = await form.validateFields();
+    if (validate) {
+      const formValues = form.getFieldsValue();
+      window.console.log(formValues, values);
 
-    const result = await addData({ ...formValues, role_access: values });
+      const result = await addData({ ...formValues, role_access: values });
 
-    if (result.code === 1) {
-      message.success(result.msg);
-      history.push(`/account/role/edit/${result.data.id}`);
+      if (result.code === 1) {
+        message.success(result.msg);
+        history.push(`/account/role/edit/${result.data.id}`);
+      }
     }
   };
 
@@ -47,7 +49,17 @@ const Index = () => {
         <RoleForm form={form} />
 
         <div className="mb-3">
-          <Tree checkable selectable={false} onCheck={onCheck} treeData={treeData} />
+          <Tree
+            titleRender={(nodeData: any) => {
+              return intl.formatMessage({
+                id: nodeData.locale,
+              });
+            }}
+            checkable
+            selectable={false}
+            onCheck={onCheck}
+            treeData={treeData}
+          />
         </div>
 
         <Button onClick={onSubmit} className="mr-1" type="primary">

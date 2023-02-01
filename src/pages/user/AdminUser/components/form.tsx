@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Form, Input, Checkbox, Button, Card } from 'antd';
 import { getRoles } from '@/services/role';
@@ -13,8 +13,12 @@ const layout = {
   },
 };
 
-const UserForm = ({ form, onSubmit }: any) => {
+const UserForm = (props: any) => {
+  const { request, onFinish } = props;
+
   const [radioData, setRadioData] = useState([]);
+
+  const [form] = Form.useForm();
 
   useEffect(() => {
     async function featchData() {
@@ -34,13 +38,28 @@ const UserForm = ({ form, onSubmit }: any) => {
     featchData();
   }, []);
 
+  const fetchData = async () => {
+    if (form) {
+      const res = await request();
+      if (res.code == 1) {
+        form.setFieldsValue(res.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (request) {
+      fetchData();
+    }
+  }, []);
+
   function onChange(checkedValues: any) {
     window.console.log('checked = ', checkedValues);
   }
 
   return (
     <Card style={{ minHeight: '300px' }}>
-      <Form form={form} style={{ maxWidth: '500px' }} {...layout} name="basic">
+      <Form form={form} style={{ maxWidth: '500px' }} {...layout} onFinish={onFinish}>
         <Form.Item
           label="用户名"
           name="user_login"
@@ -82,15 +101,7 @@ const UserForm = ({ form, onSubmit }: any) => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4 }}>
-          <Button
-            onClick={() => {
-              if (onSubmit) {
-                onSubmit();
-              }
-            }}
-            className="mr-1"
-            type="primary"
-          >
+          <Button htmlType="submit" className="mr-1" type="primary">
             确定
           </Button>
           <Button onClick={() => history.goBack()}>返回</Button>

@@ -10,3 +10,17 @@ export async function setSettings(params: any) {
         data: params,
     });
 }
+
+export async function getMobilelogin(params: any = {}) {
+    return authRequest('/api/v1/admin/settings/mobile', {
+        method: 'get',
+        params,
+    });
+}
+
+export async function setMobilelogin(data: any = {}) {
+    return authRequest('/api/v1/admin/settings/mobile', {
+        method: 'post',
+        data,
+    });
+}

@@ -54,6 +54,9 @@ export default {
   'menu.settings.menu': '菜单管理',
   'menu.settings.menu.list': '菜单列表',
 
+  'menu.settings.login': '登录设置',
+  'menu.settings.login.list': '设置列表',
+
   'menu.account': '账号管理',
   'menu.account.role': '角色设置',
   'menu.account.role.list': '角色列表',
