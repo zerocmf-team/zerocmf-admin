@@ -72,7 +72,7 @@ const PostForm = ({ editId }: any) => {
 
     if (result.code === 1) {
       if (!editId) {
-        history.push(`/portal/index/edit/${result.data.id}`);
+        history.push(`/portal/article/edit/${result.data.id}`);
       }
       message.success(result.msg);
       return;
@@ -308,7 +308,7 @@ const PostForm = ({ editId }: any) => {
           提交
         </Button>
 
-        <Button onClick={() => history.goBack()}>返回</Button>
+        <Button onClick={() => history.push('/portal/article/list')}>返回</Button>
       </Form.Item>
     </Form>
   );

@@ -131,18 +131,25 @@ const ModalForm = forwardRef((props: any, ref) => {
           />
         </Form.Item>
 
-        <Form.Item label="部门名称" name="name">
+        <Form.Item label="部门名称" initialValue="" name="name">
           <Input />
         </Form.Item>
 
-        <Form.Item label="负责人" name="leader">
+        <Form.Item label="负责人" initialValue="" name="leader">
           <Input />
         </Form.Item>
 
         <Form.Item
           label="联系电话"
           name="mobile"
-          rules={[{ pattern: /\d{3}-\d{8}|\d{4}-\{7,8}/, message: '联系电话不正确！' }]}
+          initialValue=""
+          rules={[
+            {
+              pattern:
+                /((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/,
+              message: '联系电话不正确！',
+            },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -150,6 +157,7 @@ const ModalForm = forwardRef((props: any, ref) => {
         <Form.Item
           label="邮箱"
           name="email"
+          initialValue=""
           rules={[{ type: 'email', message: '邮箱格式不正确！' }]}
         >
           <Input />

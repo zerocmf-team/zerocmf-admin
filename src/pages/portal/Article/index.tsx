@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Button, Popconfirm, Divider, message, Tag, Tooltip } from 'antd';
+import { Button, Popconfirm, Divider, message, Tag, Tooltip, TreeSelect } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -54,14 +54,15 @@ const Index = () => {
       dataIndex: 'post_title',
       key: 'post_title',
       width: 100,
-      search: false,
     },
     {
       title: '分类',
       dataIndex: 'category',
       key: 'category',
       width: 100,
-      search: true,
+      renderFormItem: (item, { type, defaultRender, formItemProps, fieldProps, ...rest }, form) => (
+        <TreeSelect />
+      ),
       render: (_, item: any) => (
         <div style={{ maxWidth: '100px' }} className="ellipsis-1">
           <Tooltip placement="topLeft" title={getTags(item.category)}>
@@ -114,7 +115,7 @@ const Index = () => {
         <>
           <a
             onClick={() => {
-              history.push(`/portal/index/edit/${item.id}`);
+              history.push(`/portal/article/edit/${item.id}`);
             }}
           >
             编辑

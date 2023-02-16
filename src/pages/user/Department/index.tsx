@@ -60,8 +60,8 @@ const Index: React.FC = () => {
       dataIndex: 'leader',
       key: 'leader',
       width: '15%',
-      render: (text, record: any) => {
-        return `${text} ${record.mobile || record.email}`;
+      render: (text = '', record: any) => {
+        return `${text} - ${record.mobile || record.email || ''}`;
       },
     },
     {

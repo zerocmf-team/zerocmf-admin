@@ -114,8 +114,8 @@
           },
           {
             name: 'detail',
-            path: 'detail/wechat',
-            component: './settings/Login/detail/Wechat',
+            path: 'detail/wxapp',
+            component: './settings/Login/detail/Wxapp',
             hideInMenu: true,
             // access: 'rbac',
           },
@@ -270,6 +270,13 @@
             component: './portal/Article/Add',
             access: 'rbac',
             hideInMenu: true
+          },
+          {
+            name: 'edit',
+            path: '/portal/article/edit/:id',
+            component: './portal/Article/Edit',
+            access: 'rbac',
+            hideInMenu: true
           }
         ],
       },
@@ -328,7 +335,7 @@
           },
           {
             name: 'edit',
-            path: '/portal/page/edit',
+            path: '/portal/page/edit/:id',
             component: './portal/Page/Edit',
             hideInMenu: true,
             // access: 'rbac',

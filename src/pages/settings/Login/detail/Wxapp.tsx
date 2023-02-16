@@ -1,6 +1,8 @@
 import { PageContainer } from '@ant-design/pro-components';
-import { Button, Card, Col, Form, Input, Row, Switch } from 'antd';
+import { Button, Card, Col, Form, Input, message, Row, Switch } from 'antd';
 import { useImmer } from 'use-immer';
+import { getWxappLogin, setWxappLogin } from '@/services/settings';
+import { useEffect } from 'react';
 
 const formItemLayout = {
   labelCol: {
@@ -23,12 +25,18 @@ const buttonWrapperCol = {
   },
 };
 
-const Wechat = (props: any) => {
+const Wechat = () => {
   const [form] = Form.useForm();
+  const featchData = async () => {
+    const res = await getWxappLogin();
+    if (res.code == 1) {
+      form.setFieldsValue(res.data);
+    }
+  };
 
-  const [state, setState] = useImmer({
-    form: {},
-  });
+  useEffect(() => {
+    featchData();
+  }, []);
 
   return (
     <PageContainer>
@@ -36,10 +44,16 @@ const Wechat = (props: any) => {
         <Row>
           <Col xs={24} md={12}>
             <Form
-              onFinish={async (values: any) => {}}
+              onFinish={async (values: any) => {
+                if (values.status) values.status = 1;
+                else values.status = 0;
+                const res = await setWxappLogin(values);
+                if (res.code == 1) {
+                  message.success(res.msg);
+                }
+              }}
               form={form}
               {...formItemLayout}
-              initialValues={state.form}
               autoComplete="off"
             >
               <Form.Item

@@ -2,7 +2,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Button, Card, Col, Form, Input, message, Row, Select, Switch } from 'antd';
 import { useEffect } from 'react';
 import { useImmer } from 'use-immer';
-import { getMobilelogin, setMobilelogin } from '@/services/settings';
+import { getMobileLogin, setMobileLogin } from '@/services/settings';
 
 const formItemLayout = {
   labelCol: {
@@ -46,7 +46,7 @@ const Detail = (props: any) => {
   });
 
   const featchData = async () => {
-    const res = await getMobilelogin();
+    const res = await getMobileLogin();
     if (res.code == 1) {
       form.setFieldsValue(res.data);
     }
@@ -65,7 +65,7 @@ const Detail = (props: any) => {
               onFinish={async (values: any) => {
                 if (values.status) values.status = 1;
                 else values.status = 0;
-                const res = await setMobilelogin(values);
+                const res = await setMobileLogin(values);
                 if (res.code == 1) {
                   message.success(res.msg);
                 }

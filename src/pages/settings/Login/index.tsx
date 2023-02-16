@@ -28,7 +28,7 @@ const BindingView: React.FC = () => {
       actions: [
         <a
           onClick={() => {
-            history.push('/settings/login/detail/wechat');
+            history.push('/settings/login/detail/wxapp');
           }}
           key="settings"
         >

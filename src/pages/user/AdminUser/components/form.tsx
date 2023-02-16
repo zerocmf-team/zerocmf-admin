@@ -104,7 +104,7 @@ const UserForm = (props: any) => {
           <Button htmlType="submit" className="mr-1" type="primary">
             确定
           </Button>
-          <Button onClick={() => history.goBack()}>返回</Button>
+          <Button onClick={() => history.push('/account/user/list')}>返回</Button>
         </Form.Item>
       </Form>
     </Card>
