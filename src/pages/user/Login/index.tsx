@@ -42,7 +42,6 @@ const Login: React.FC = () => {
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
-    console.log('userInfo', userInfo);
     if (userInfo) {
       await setInitialState((s) => ({
         ...s,
@@ -73,7 +72,6 @@ const Login: React.FC = () => {
         history.push(redirect || '/');
         return;
       }
-      console.log(msg);
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
@@ -84,7 +82,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const { code, msg = '' } = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -130,14 +128,7 @@ const Login: React.FC = () => {
             />
           </Tabs>
 
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
-              })}
-            />
-          )}
+          {code == 0 && type === 'account' && <LoginMessage content={msg} />}
           {type === 'account' && (
             <>
               <ProFormText

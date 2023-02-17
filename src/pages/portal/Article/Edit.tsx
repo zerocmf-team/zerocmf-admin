@@ -9,7 +9,7 @@ const Add = (props: any) => {
   return (
     <PageContainer
       onBack={() => {
-        history.push('/portal/index');
+        history.push('/portal/article/list');
       }}
     >
       <Card>
