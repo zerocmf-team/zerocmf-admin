@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Card, Form, Row, Col, Button, message } from 'antd';
 import { history } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { updatePortalCategory, getPortalCategory } from '@/services/portalCategory';
 import Basic from './components/Basic';
 import Seo from './components/Seo';
@@ -50,7 +50,7 @@ const Edit = (props: any) => {
   // 初始化获取编辑内容
   useEffect(() => {
     const featchData = async () => {
-      const result = await getPortalCategory(id);
+      const result: any = await getPortalCategory(id);
       if (result.code === 1) {
         result.data.parent_id = `${result.data.parent_id}`;
         dispatch(result.data);
@@ -66,7 +66,7 @@ const Edit = (props: any) => {
 
   const onSubmit = async () => {
     formData['parent_id'] = Number(formData['parent_id']);
-    const result = await updatePortalCategory(formData.id, formData);
+    const result: any = await updatePortalCategory(formData.id, formData);
     if (result.code === 1) {
       message.success(result.msg);
     } else {

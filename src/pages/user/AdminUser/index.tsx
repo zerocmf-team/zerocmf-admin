@@ -2,8 +2,7 @@ import { useRef, useState } from 'react';
 import { Link, history } from 'umi';
 import { Button, Divider, message, Popconfirm, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getDatas, deleteAccount } from '@/services/user';
 
 const { Text } = Typography;

@@ -59,7 +59,13 @@ const UserForm = (props: any) => {
 
   return (
     <Card style={{ minHeight: '300px' }}>
-      <Form form={form} style={{ maxWidth: '500px' }} {...layout} onFinish={onFinish}>
+      <Form
+        autoComplete="off"
+        form={form}
+        style={{ maxWidth: '500px' }}
+        {...layout}
+        onFinish={onFinish}
+      >
         <Form.Item
           label="用户名"
           name="user_login"

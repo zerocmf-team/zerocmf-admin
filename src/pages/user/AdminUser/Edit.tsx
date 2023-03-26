@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { editData, getData } from '@/services/user';
 import UserForm from './components/form';
 

@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { history } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { addData } from '@/services/user';
 import UserForm from './components/form';
 

@@ -72,7 +72,7 @@ const Websites = () => {
   }
 
   return (
-    <PageContainer loading={loading}>
+    <PageContainer fixedHeader loading={loading}>
       <Card
         tabList={tabList}
         activeTabKey={key}

@@ -15,26 +15,26 @@ const formItemLayout = {
   },
 };
 
-const Basic = (props) => {
-  const { onFormChange, form, pid } = props;
+const Basic = (props: any) => {
+  const { onFormChange, form, pid }: any = props;
 
-  let tPid = '0';
-  if (pid !== undefined) {
-    tPid = `${tPid}`;
-  }
+  useEffect(() => {
+    form.setFieldValue('parent_id', pid);
+  }, [form, pid]);
+
   const [treeData, setTreeData] = useState([]); // 编辑
   useEffect(() => {
     const featchData = async () => {
-      const result = await getPortalCategoryList();
+      const result: any = await getPortalCategoryList();
       if (result.code === 1) {
-        const data = [
+        const data: any = [
           {
             title: '作为一级分类',
             value: '0',
           },
         ];
 
-        result.data.forEach((element) => {
+        result.data.forEach((element: any) => {
           element.parent_id = `${element.parent_id}`;
           data.push(element);
         });
@@ -43,10 +43,6 @@ const Basic = (props) => {
     };
     featchData();
   }, []);
-
-  const onChange = (value) => {
-    // window.console.log('value', value);
-  };
 
   return (
     <>
@@ -60,14 +56,12 @@ const Basic = (props) => {
             <Form.Item
               label="上级"
               name="parent_id"
-              initialValue={tPid}
               rules={[{ required: true, message: '请选择上级分类!' }]}
             >
               <TreeSelect
                 treeDefaultExpandAll
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 treeData={treeData}
-                onChange={onChange}
               />
             </Form.Item>
 

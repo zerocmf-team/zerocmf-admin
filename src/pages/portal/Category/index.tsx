@@ -1,19 +1,21 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Button, Popconfirm, Divider, message, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { history } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
-import { getPortalCategorys, deletePortalCategory } from '@/services/portalCategory';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
+import {
+  getPortalCategorys,
+  deletePortalCategory,
+  updatePortalCategory,
+} from '@/services/portalCategory';
 
-const statusObj = { enable: 1, disable: 0 };
-const status = ['停用', '启用'];
+const statusObj = { all: '', enable: 1, disable: 0 };
 
 const Category = () => {
   const ref = useRef<any>();
   // 确认删除
   const confirmDelete = async (id: number) => {
-    const result = await deletePortalCategory(id);
+    const result: any = await deletePortalCategory(id);
     if (result.code === 1) {
       message.success(result.msg);
       ref.current.reload();
@@ -21,10 +23,27 @@ const Category = () => {
     }
     message.error(result.msg);
   };
+
   // 批量删除
   const handleBatch = async (selectedRowKeys: any) => {
     console.log('selectedRowKeys', selectedRowKeys);
   };
+
+  // 显示隐藏
+  const toggleStatus = (item: any) => {
+    const { id, status } = item;
+    const statusInt = status == '启用' ? 0 : 1;
+    const fetchData = async () => {
+      const res: any = await updatePortalCategory(id, { status: statusInt });
+      if (res.code != 1) {
+        message.error(res.msg);
+        return;
+      }
+      ref.current.reload();
+    };
+    fetchData();
+  };
+
   const columns: any = [
     {
       title: 'ID',
@@ -79,6 +98,7 @@ const Category = () => {
           status: 'Default',
         },
       },
+      render: (_: any, item: any) => <>{item.status ? '启用' : '禁用'}</>,
     },
     {
       title: '操作',
@@ -119,10 +139,11 @@ const Category = () => {
             title="您确定隐藏吗?"
             okText="确认"
             cancelText="取消"
-            // onConfirm={() => confirmStatus(item.id)}
+            onConfirm={() => toggleStatus(item)}
             placement="topRight"
           >
-            <a style={{ color: 'rgba(0, 0, 0, 0.45)' }}>隐藏</a>
+            {item.status == '启用' && <a style={{ color: 'rgba(0, 0, 0, 0.45)' }}>隐藏</a>}
+            {item.status == '停用' && <a style={{ color: '#1890ff' }}>显示</a>}
           </Popconfirm>
         </>
       ),
@@ -131,17 +152,10 @@ const Category = () => {
 
   const getData = async (params: any) => {
     params.status = statusObj[params.status];
-    const result = await getPortalCategorys(params);
+    const result: any = await getPortalCategorys(params);
     let data = [];
     if (result.code === 1) {
       data = result.data.data;
-      if (data) {
-        data.map((v: any) => {
-          const temp = v;
-          temp.status = status[v.status];
-          return temp;
-        });
-      }
     }
     return { data };
   };
@@ -154,6 +168,9 @@ const Category = () => {
         headerTitle="分类管理"
         request={getData}
         actionRef={ref}
+        expandable={{
+          defaultExpandAllRows: true,
+        }}
         toolBarRender={(_, { selectedRowKeys }) => [
           <Button
             key="add"

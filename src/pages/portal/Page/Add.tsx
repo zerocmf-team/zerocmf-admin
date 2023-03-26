@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 import { history } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import PostForm from './components/PostForm';
 
 const Add = () => {

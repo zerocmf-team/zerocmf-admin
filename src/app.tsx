@@ -12,8 +12,9 @@ import { getAdminMenu } from '@/services/adminMenu';
 import { message } from 'antd';
 
 import 'antd/dist/antd.css';
-import '@zerocmf/antd-form/dist/style.css';
+import '@zerocmf/antd-form/es/style.css';
 import { createRef } from 'react';
+import { findTreeFirst } from './utils/utils';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -144,7 +145,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
               disableUrlParams
               enableDarkTheme
               settings={initialState?.settings}
-              onSettingChange={(settings) => {
+              onSettingChange={(settings: any) => {
                 setInitialState((preInitialState: any) => ({
                   ...preInitialState,
                   settings,
@@ -160,12 +161,18 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
       params: {
         userId: initialState?.currentUser?.id,
       },
-      request: async (params = {}) => {
+      request: async (params: any = {}) => {
         // initialState.currentUser 中包含了所有用户信息
         const { userId } = params;
         if (userId) {
-          const result = await getAdminMenu();
+          const result: any = await getAdminMenu();
           if (result.code === 1) {
+            //  重定向到自己可访问的第一路由
+            const redirect = findTreeFirst(result.data);
+            const pathname = history.location.pathname;
+            if (redirect && pathname == '/') {
+              history.push(redirect);
+            }
             setInitialState((s: any) => ({ ...s, menus: result.data }));
             return result.data;
           }

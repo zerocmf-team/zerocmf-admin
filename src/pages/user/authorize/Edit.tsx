@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Tree, Card, Form, Button, message } from 'antd';
 import { history, useIntl } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { getAuthorizes } from '@/services/authorize';
 import { getRole } from '@/services/role';
 import { getData, editData } from '@/services/authAccess';

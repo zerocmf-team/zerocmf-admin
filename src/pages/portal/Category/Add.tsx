@@ -1,7 +1,7 @@
 import { useState, useReducer } from 'react';
 import { Card, Form, Row, Col, Button, message } from 'antd';
 import { history } from 'umi';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { addPortalCategory } from '@/services/portalCategory';
 import Basic from './components/Basic';
 import Seo from './components/Seo';
@@ -53,7 +53,7 @@ const Add = (props: any) => {
 
   const onSubmit = async () => {
     formData['parent_id'] = Number(formData['parent_id']);
-    const result = await addPortalCategory(formData);
+    const result: any = await addPortalCategory(formData);
     if (result.code === 1) {
       message.success(result.msg);
       history.push(`/portal/category/edit/${result.data.id}`);

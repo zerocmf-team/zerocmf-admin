@@ -1,20 +1,21 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button, Popconfirm, Divider, message, Tag, Tooltip, TreeSelect } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getPortals, deletePortal, deletePortals } from '@/services/portal';
+import { getPortalCategoryList } from '@/services/portalCategory';
 import { history } from 'umi';
 
-const statusObj = { enable: 1, disable: 0 };
-const status = ['停用', '启用'];
+const statusObj = { all: '', enable: 1, disable: 0 };
+const statusLabels = ['全部', '发布', '草稿'];
 
 const Index = () => {
   const [total, setTotal] = useState(0);
+  const [category, setCategory] = useState([]);
   const ref = useRef<any>();
   // 确认删除
   const confirmDelete = async (id: number) => {
-    const result = await deletePortal(id);
+    const result: any = await deletePortal(id);
     if (result.code === 1) {
       ref.current.reload();
       message.success(result.msg);
@@ -24,7 +25,7 @@ const Index = () => {
   };
   // 批量删除
   const handleBatch = async (selectedRowKeys: any) => {
-    const result = await deletePortals({ ids: selectedRowKeys });
+    const result: any = await deletePortals({ ids: selectedRowKeys });
     if (result.code === 1) {
       ref.current.reload();
       message.success(result.msg);
@@ -40,6 +41,18 @@ const Index = () => {
       </Tag>
     ));
   };
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      const res: any = await getPortalCategoryList({});
+      if (res.code == 1) {
+        setCategory(res.data);
+      }
+    };
+    fetchdata();
+  }, []);
+
+  // 获取所有的分类
 
   const columns: any = [
     {
@@ -60,8 +73,15 @@ const Index = () => {
       dataIndex: 'category',
       key: 'category',
       width: 100,
-      renderFormItem: (item, { type, defaultRender, formItemProps, fieldProps, ...rest }, form) => (
-        <TreeSelect />
+      renderFormItem: (
+        item: any,
+        { type, defaultRender, formItemProps, fieldProps, ...rest }: any,
+        form: any,
+      ) => (
+        <TreeSelect
+          fieldNames={{ label: 'name', value: 'value', children: 'children' }}
+          treeData={category}
+        />
       ),
       render: (_, item: any) => (
         <div style={{ maxWidth: '100px' }} className="ellipsis-1">
@@ -107,6 +127,28 @@ const Index = () => {
       search: false,
     },
     {
+      title: '状态',
+      dataIndex: 'post_status',
+      key: 'post_status',
+      initialValue: 'enable',
+      order: '5',
+      width: 100,
+      valueEnum: {
+        all: {
+          text: '全部',
+          status: 'Default',
+        },
+        enable: {
+          text: '发布',
+          status: 'Success',
+        },
+        disable: {
+          text: '草稿',
+          status: 'Default',
+        },
+      },
+    },
+    {
       title: '操作',
       width: 100,
       dataIndex: 'option',
@@ -137,16 +179,15 @@ const Index = () => {
     },
   ];
   const getData = async (params: any) => {
-    const tempParams = params;
-    tempParams.status = statusObj[params.status];
-    const result = await getPortals(tempParams);
+    params.post_status = statusObj[params.post_status];
+    const result: any = await getPortals(params);
     let data = [];
     setTotal(0);
     if (result.code === 1) {
       data = result.data.data;
       data.map((v: any) => {
         const temp = v;
-        temp.status = status[v.status];
+        temp.post_status = statusLabels[v.post_status];
         return temp;
       });
       setTotal(result.data.total);

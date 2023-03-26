@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { Popconfirm, message } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getPortalTags, deletePortalTag } from '@/services/portalTag';
 
 const statusObj = { enable: 1, disable: 0 };

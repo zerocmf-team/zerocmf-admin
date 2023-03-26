@@ -1,8 +1,7 @@
 import { useState, useRef } from 'react';
 import { Button, Popconfirm, Divider, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getPortals, deletePortal, deletePortals } from '@/services/portal';
 import { history } from 'umi';
 
@@ -14,7 +13,7 @@ const Index = () => {
   const ref = useRef<any>();
   // 确认删除
   const confirmDelete = async (id: any) => {
-    const result = await deletePortal(id);
+    const result: any = await deletePortal(id);
     if (result.code === 1) {
       ref.current.reload();
       message.success(result.msg);
@@ -24,7 +23,7 @@ const Index = () => {
   };
   // 批量删除
   const handleBatch = async (selectedRowKeys: any) => {
-    const result = await deletePortals({ ids: selectedRowKeys });
+    const result: any = await deletePortals({ ids: selectedRowKeys });
     if (result.code === 1) {
       ref.current.reload();
       message.success(result.msg);
@@ -46,7 +45,6 @@ const Index = () => {
       dataIndex: 'post_title',
       key: 'post_title',
       width: 200,
-      search: false,
     },
     {
       title: '作者',

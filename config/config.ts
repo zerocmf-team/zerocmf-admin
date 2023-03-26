@@ -1,12 +1,9 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
 import { join } from 'path';
-
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
-
-const publicPath = '/';
 
 const { REACT_APP_ENV } = process.env;
 
@@ -50,19 +47,10 @@ export default defineConfig({
   // https://umijs.org/plugins/plugin-esbuild
   esbuild: {},
   title: false,
-  links: [
-    { rel: "stylesheet", type: "text/css", href: "/assets/css/iconfont.css" },
-    { rel: "stylesheet", type: "text/css", href: "/assets/css/style.css" }
-  ],
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
-  },
-  define: {
-    PUBLIC_PATH: publicPath,
-    THEME: '艺术品',
-    VERSION: '0.0.1',
   },
   // Fast Refresh 热更新
   fastRefresh: {},
@@ -80,13 +68,10 @@ export default defineConfig({
       projectName: 'swagger',
     },
   ],
-  nodeModulesTransform: { type: 'none' },
-  // mfsu: {},
-  // chainWebpack(memo: any) {
-  //   memo.module.rule('ts-in-node_modules').include.clear();
-  //   memo.module.rule('mjs-rule').test(/.m?js/).resolve.set('fullySpecified', false);
-  //   return memo;
-  // },
+  nodeModulesTransform: {
+    type: 'none',
+  },
+  mfsu: {},
   webpack5: {},
   exportStatic: {},
 });

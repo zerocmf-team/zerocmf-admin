@@ -2,9 +2,8 @@ import { useState, useRef } from 'react';
 import { history } from 'umi';
 import { Button, Divider, Popconfirm, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getRoles, deleteRole } from '@/services/role';
-import ProTable from '@ant-design/pro-table';
 
 const Index = () => {
   const [total, setTotal] = useState(0);
