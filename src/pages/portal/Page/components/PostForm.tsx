@@ -5,6 +5,7 @@ import { history } from 'umi';
 import { getPortal, addPortal, updatePortal } from '@/services/portal';
 
 import { getThemeFiles } from '@/services/themeFile';
+import { listPage } from '@/services/appPage';
 
 const layout = {
   labelCol: {
@@ -87,11 +88,18 @@ const PostForm = ({ editId }: any) => {
     }
 
     const init = async () => {
-      const result = await getThemeFiles({ theme: THEME, type: 'page' });
-
-      if (result.code === 1) {
-        setTpl(result.data);
+      const res = await listPage(1, { type: 'article', paginate: 'no' });
+      if (res.code == 1) {
+        setTpl(res.data);
+        if (res.data.length > 0) {
+          form.setFieldValue('template', `${res.data[0]?.id}`);
+        }
       }
+      /* 改成低代码调用 */
+      // const result = await getThemeFiles({ theme: THEME, type: 'page' });
+      // if (result.code === 1) {
+      //   setTpl(result.data);
+      // }
     };
 
     init();
@@ -153,8 +161,8 @@ const PostForm = ({ editId }: any) => {
 
       <Form.Item label="模板" name="template" initialValue={'default'}>
         <Select placeholder="请选择模板" style={{ width: 120 }}>
-          {tpl.map((item: any, index) => (
-            <Option key={index} value={item.file}>
+          {tpl.map((item: any) => (
+            <Option key={item.id} value={`${item.id}`}>
               {item.name}
             </Option>
           ))}

@@ -12,12 +12,11 @@ const formItemLayout = {
 };
 
 const Seo = (props: any) => {
-  const { onFormChange, form } = props;
-
+  const { form } = props;
   return (
     <Row>
       <Col span={12}>
-        <Form form={form} onValuesChange={onFormChange} {...formItemLayout}>
+        <Form form={form} {...formItemLayout}>
           <Form.Item label="SEO标题" name="seo_title">
             <Input />
           </Form.Item>

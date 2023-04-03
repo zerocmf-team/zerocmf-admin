@@ -51,6 +51,9 @@ export default {
   'menu.settings.assets': '素材管理',
   'menu.settings.assets.list': '素材列表',
 
+  'menu.settings.nav': '导航管理',
+  'menu.settings.nav.list': '导航列表',
+
   'menu.settings.menu': '菜单管理',
   'menu.settings.menu.list': '菜单列表',
 
@@ -97,5 +100,9 @@ export default {
   'menu.portal.page.edit': '编辑列表',
 
   'menu.portal.tag': '标签管理',
-  'menu.portal.tag.list': '标签列表'
+  'menu.portal.tag.list': '标签列表',
+
+  'menu.app': '应用管理',
+  'menu.app.list': '应用列表',
+  'menu.app.page': '页面列表',
 };

@@ -7,7 +7,7 @@ import { getPortalCategoryList } from '@/services/portalCategory';
 import { history } from 'umi';
 
 const statusObj = { all: '', enable: 1, disable: 0 };
-const statusLabels = ['全部', '发布', '草稿'];
+const statusLabels = ['草稿', '发布'];
 
 const Index = () => {
   const [total, setTotal] = useState(0);

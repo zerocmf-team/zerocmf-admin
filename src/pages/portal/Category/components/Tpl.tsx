@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { Form, Select, Row, Col } from 'antd';
-
 import { useImmer } from 'use-immer';
-
-import { getThemeFiles } from '@/services/themeFile';
+// import { getThemeFiles } from '@/services/themeFile';
+import { listPage } from '@/services/appPage';
 
 const { Option } = Select;
 
@@ -24,25 +23,30 @@ const Tpl = (props: any) => {
     tplArticle: [],
   });
 
-  const { onFormChange, form } = props;
+  const { form } = props;
 
   useEffect(() => {
     const init = async () => {
       let list_tpl = '';
       let one_tpl = '';
-      const listResult = await getThemeFiles({ type: 'list' });
-      if (listResult.code === 1) {
-        list_tpl = listResult.data?.[0].file;
+
+      const listRes = await listPage(1, { type: 'list', paginate: 'no' });
+      if (listRes.code == 1) {
+        if (listRes.data.length > 0) {
+          list_tpl = `${listRes.data[0]?.id}`;
+        }
         setState((draft) => {
-          draft.tplList = listResult.data;
+          draft.tplList = listRes.data;
         });
       }
 
-      const articleResult = await getThemeFiles({ type: 'article' });
-      if (articleResult.code === 1) {
-        one_tpl = articleResult.data?.[0].file;
+      const res = await listPage(1, { type: 'article', paginate: 'no' });
+      if (res.code == 1) {
+        if (res.data.length > 0) {
+          one_tpl = `${res.data[0]?.id}`;
+        }
         setState((draft) => {
-          draft.tplArticle = articleResult.data;
+          draft.tplArticle = res.data;
         });
       }
 
@@ -56,20 +60,20 @@ const Tpl = (props: any) => {
       }
     };
     init();
-  }, []);
+  }, [form, setState]);
 
   return (
     <Row>
       <Col span={12}>
-        <Form form={form} onValuesChange={onFormChange} {...formItemLayout}>
+        <Form form={form} {...formItemLayout}>
           <Form.Item
             label="列表模板"
             name="list_tpl"
             rules={[{ required: true, message: '列表模板不能为空!' }]}
           >
             <Select placeholder="请选择模板">
-              {state.tplList.map((item: any, index) => (
-                <Option key={index} value={item.file}>
+              {state.tplList.map((item: any) => (
+                <Option key={item.id} value={`${item.id}`}>
                   {item.name}
                 </Option>
               ))}
@@ -82,8 +86,8 @@ const Tpl = (props: any) => {
             rules={[{ required: true, message: '文章模板不能为空!' }]}
           >
             <Select placeholder="请选择模板">
-              {state.tplArticle.map((item: any, index) => (
-                <Option key={index} value={item.file}>
+              {state.tplArticle.map((item: any) => (
+                <Option key={item.id} value={`${item.id}`}>
                   {item.name}
                 </Option>
               ))}

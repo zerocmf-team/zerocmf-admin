@@ -57,6 +57,7 @@
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^1.1.25",
     "@umijs/route-utils": "^2.0.0",
+    "@zerocmf/antd-form": "^1.0.2",
     "antd": "^4.24.8",
     "classnames": "^2.3.0",
     "immer": "^9.0.19",

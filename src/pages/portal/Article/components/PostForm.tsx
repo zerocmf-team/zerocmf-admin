@@ -17,10 +17,9 @@ import { history } from 'umi';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getPortalCategoryList } from '@/services/portalCategory';
 import { getPortal, addPortal, updatePortal } from '@/services/portal';
-
 import moment from 'moment';
-
-import { getThemeFiles } from '@/services/themeFile';
+// import { getThemeFiles } from '@/services/themeFile';
+import { listPage } from '@/services/appPage';
 
 const layout = {
   labelCol: {
@@ -147,10 +146,19 @@ const PostForm = ({ editId }: any) => {
     }
 
     const init = async () => {
-      const result = await getThemeFiles({ type: 'article' });
-      if (result.code === 1) {
-        setTpl(result.data);
+      const res = await listPage(1, { type: 'article', paginate: 'no' });
+      if (res.code === 1) {
+        setTpl(res.data);
+        if (res.data.length > 0) {
+          form.setFieldValue('template', `${res.data[0]?.id}`);
+        }
       }
+
+      // 改成低代码调用
+      // const result = await getThemeFiles({ type: 'article' });
+      // if (result.code === 1) {
+      //   setTpl(result.data);
+      // }
     };
 
     init();
@@ -282,14 +290,13 @@ const PostForm = ({ editId }: any) => {
       </Form.Item>
 
       <Form.Item
-        // rules={[{ required: true, message: '文章模板不能为空!' }]}
-        initialValue={'article'}
+        rules={[{ required: true, message: '文章模板不能为空!' }]}
         label="模板"
         name="template"
       >
         <Select placeholder="请选择模板" style={{ width: 120 }}>
-          {tpl.map((item: any, index: number) => (
-            <Option key={index} value={item.file}>
+          {tpl.map((item: any) => (
+            <Option key={item.id} value={`${item.id}`}>
               {item.name}
             </Option>
           ))}

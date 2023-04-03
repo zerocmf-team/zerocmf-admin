@@ -1,5 +1,5 @@
-import { useState, useReducer } from 'react';
-import { Card, Form, Row, Col, Button, message } from 'antd';
+import { useEffect } from 'react';
+import { Card, Form, Row, Col, Button, message, Tabs } from 'antd';
 import { history } from 'umi';
 import { PageContainer } from '@ant-design/pro-components';
 import { addPortalCategory } from '@/services/portalCategory';
@@ -19,53 +19,47 @@ const buttonWrapperCol = {
 const Add = (props: any) => {
   const { pid } = props.history.location.query;
   const [form] = Form.useForm();
-  const [cardActive, setCardActive] = useState('basic');
 
-  const [formData, dispatch] = useReducer((state: any, action: any) => {
-    const tempState = { ...state };
-    Object.keys(action).forEach((key) => {
-      tempState[key] = action[key];
-    });
-    return tempState;
-  }, {});
-
-  const tabListNoTitle = [
+  const tabListNoTitle: any = [
     {
       key: 'basic',
-      tab: '基本设置',
+      label: '基本设置',
+      children: <Basic form={form} />,
+      forceRender: true,
     },
     {
       key: 'seo',
-      tab: 'SEO设置',
+      label: 'SEO设置',
+      children: <Seo form={form} />,
+      forceRender: true,
     },
     {
       key: 'tpl',
-      tab: '模板设置',
+      label: '模板设置',
+      children: <Tpl form={form} />,
+      forceRender: true,
     },
   ];
 
-  // 初始化获取层级关系
-
-  const onFormChange = () => {
-    const data = form.getFieldsValue();
-    dispatch(data);
-  };
+  useEffect(() => {
+    if (pid) {
+      form.setFieldValue('parent_id', Number(pid));
+    }
+  }, [form, pid]);
 
   const onSubmit = async () => {
-    formData['parent_id'] = Number(formData['parent_id']);
-    const result: any = await addPortalCategory(formData);
-    if (result.code === 1) {
-      message.success(result.msg);
-      history.push(`/portal/category/edit/${result.data.id}`);
-    } else {
-      message.error(result.msg);
+    const validate = await form.validateFields();
+    if (validate) {
+      const formData: any = form.getFieldsValue();
+      formData.parent_id = Number(formData.parent_id);
+      const result: any = await addPortalCategory(formData);
+      if (result.code === 1) {
+        message.success(result.msg);
+        history.push(`/portal/category/edit/${result.data.id}`);
+      } else {
+        message.error(result.msg);
+      }
     }
-  };
-
-  const contentListNoTitle = {
-    basic: <Basic onFormChange={onFormChange} pid={pid} form={form} />,
-    seo: <Seo onFormChange={onFormChange} form={form} />,
-    tpl: <Tpl onFormChange={onFormChange} form={form} />,
   };
 
   return (
@@ -74,15 +68,8 @@ const Add = (props: any) => {
         history.push('/portal/category');
       }}
     >
-      <Card
-        tabList={tabListNoTitle}
-        activeTabKey={cardActive}
-        onTabChange={(key) => {
-          setCardActive(key);
-        }}
-      >
-        {contentListNoTitle[cardActive]}
-
+      <Card bodyStyle={{ padding: '0 24px 24px' }}>
+        <Tabs items={tabListNoTitle} />
         <Row>
           <Col {...buttonWrapperCol}>
             <Button onClick={onSubmit} type="primary">

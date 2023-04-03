@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { Card, Form, Row, Col, Button, message } from 'antd';
+import { useEffect } from 'react';
+import { Card, Form, Row, Col, Button, message, Tabs } from 'antd';
 import { history } from 'umi';
 import { PageContainer } from '@ant-design/pro-components';
 import { updatePortalCategory, getPortalCategory } from '@/services/portalCategory';
@@ -17,68 +17,63 @@ const buttonWrapperCol = {
 };
 
 const Edit = (props: any) => {
-  const { pid } = props.history.location.query;
   const { id } = props.match.params;
   const [form] = Form.useForm();
-  const [cardActive, setCardActive] = useState('basic');
-
-  const [formData, dispatch] = useReducer((state: any, action: any) => {
-    const tempState = { ...state };
-    Object.keys(action).forEach((key) => {
-      const val = action[key];
-      tempState[key] = val;
-    });
-    form.setFieldsValue(tempState);
-    return { ...tempState };
-  }, {});
-
-  const tabListNoTitle = [
-    {
-      key: 'basic',
-      tab: '基本设置',
-    },
-    {
-      key: 'seo',
-      tab: 'SEO设置',
-    },
-    {
-      key: 'tpl',
-      tab: '模板设置',
-    },
-  ];
+  // const [formData, dispatch] = useReducer((state: any, action: any) => {
+  //   const tempState = { ...state };
+  //   Object.keys(action).forEach((key) => {
+  //     const val = action[key];
+  //     tempState[key] = val;
+  //   });
+  //   form.setFieldsValue(tempState);
+  //   return { ...tempState };
+  // }, {});
 
   // 初始化获取编辑内容
   useEffect(() => {
     const featchData = async () => {
       const result: any = await getPortalCategory(id);
       if (result.code === 1) {
-        result.data.parent_id = `${result.data.parent_id}`;
-        dispatch(result.data);
+        form.setFieldsValue(result.data);
       }
     };
     featchData();
-  }, []);
-
-  const onFormChange = () => {
-    const data = form.getFieldsValue();
-    dispatch(data);
-  };
+  }, [form, id]);
 
   const onSubmit = async () => {
-    formData['parent_id'] = Number(formData['parent_id']);
-    const result: any = await updatePortalCategory(formData.id, formData);
-    if (result.code === 1) {
-      message.success(result.msg);
-    } else {
-      message.error(result.msg);
+    const validate = await form.validateFields();
+    if (validate) {
+      const formData = form.getFieldsValue();
+      formData.parent_id = Number(formData.parent_id);
+      const result: any = await updatePortalCategory(Number(formData.id), formData);
+      if (result.code === 1) {
+        message.success(result.msg);
+      } else {
+        message.error(result.msg);
+      }
     }
   };
 
-  const contentListNoTitle = {
-    basic: <Basic onFormChange={onFormChange} pid={pid} form={form} />,
-    seo: <Seo onFormChange={onFormChange} form={form} />,
-    tpl: <Tpl onFormChange={onFormChange} form={form} />,
-  };
+  const contentList: any = [
+    {
+      key: 'basic',
+      label: '基本设置',
+      children: <Basic form={form} />,
+      forceRender: true,
+    },
+    {
+      key: 'seo',
+      label: 'SEO设置',
+      children: <Seo form={form} />,
+      forceRender: true,
+    },
+    {
+      key: 'tpl',
+      label: '模板设置',
+      children: <Tpl form={form} />,
+      forceRender: true,
+    },
+  ];
 
   return (
     <PageContainer
@@ -86,14 +81,8 @@ const Edit = (props: any) => {
         history.push('/portal/category');
       }}
     >
-      <Card
-        tabList={tabListNoTitle}
-        activeTabKey={cardActive}
-        onTabChange={(key) => {
-          setCardActive(key);
-        }}
-      >
-        {contentListNoTitle[cardActive]}
+      <Card bodyStyle={{ padding: '0 24px 24px' }}>
+        <Tabs defaultActiveKey="1" items={contentList} />
 
         <Row>
           <Col {...buttonWrapperCol}>
