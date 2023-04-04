@@ -34,7 +34,7 @@
         routes: [
           {
             path: './',
-            redirect: "/settings/websites/detail",
+            redirect: '/settings/websites/detail',
             access: 'rbac',
           },
           {
@@ -43,8 +43,8 @@
             component: './settings/Websites',
             hideInMenu: true,
             access: 'rbac',
-          }
-        ]
+          },
+        ],
       },
       {
         name: 'upload',
@@ -53,7 +53,7 @@
         routes: [
           {
             path: './',
-            redirect: "/settings/upload/detail",
+            redirect: '/settings/upload/detail',
             access: 'rbac',
           },
           {
@@ -62,8 +62,8 @@
             component: './settings/Upload',
             hideInMenu: true,
             access: 'rbac',
-          }
-        ]
+          },
+        ],
       },
       {
         name: 'assets',
@@ -72,7 +72,7 @@
         routes: [
           {
             path: './',
-            redirect: "/settings/assets/list",
+            redirect: '/settings/assets/list',
             access: 'rbac',
           },
           {
@@ -81,8 +81,27 @@
             component: './settings/Assets',
             hideInMenu: true,
             access: 'rbac',
-          }
-        ]
+          },
+        ],
+      },
+      {
+        name: 'nav',
+        path: '/settings/nav',
+        access: 'rbac',
+        routes: [
+          {
+            path: './',
+            redirect: './list',
+            access: 'rbac',
+          },
+          {
+            name: 'list',
+            path: 'list',
+            component: './settings/Nav',
+            hideInMenu: true,
+            access: 'rbac',
+          },
+        ],
       },
       {
         name: 'menu',
@@ -134,8 +153,8 @@
             hideInMenu: true,
             access: 'rbac',
           },
-        ]
-      }
+        ],
+      },
     ],
   },
   {
@@ -231,9 +250,9 @@
             component: './user/Department',
             hideInMenu: true,
             access: 'rbac',
-          }
-        ]
-      }
+          },
+        ],
+      },
     ],
   },
   {
@@ -257,15 +276,15 @@
             access: 'rbac',
           },
           {
-            name: "list",
+            name: 'list',
             path: '/customer/member/list',
             component: './customer/Member',
             hideInMenu: true,
             access: 'rbac',
-          }
-        ]
-      }
-    ]
+          },
+        ],
+      },
+    ],
   },
   {
     name: 'portal',
@@ -299,7 +318,7 @@
             path: '/portal/article/add',
             component: './portal/Article/Add',
             access: 'rbac',
-            hideInMenu: true
+            hideInMenu: true,
           },
           {
             name: 'edit',
@@ -307,7 +326,7 @@
             component: './portal/Article/Edit',
             hideInMenu: true,
             access: 'rbac',
-          }
+          },
         ],
       },
       {
@@ -340,7 +359,7 @@
             component: './portal/Category/Edit',
             hideInMenu: true,
             access: 'rbac',
-          }
+          },
         ],
       },
       {
@@ -373,8 +392,8 @@
             component: './portal/Page/Edit',
             hideInMenu: true,
             access: 'rbac',
-          }
-        ]
+          },
+        ],
       },
       {
         name: 'tag',
@@ -392,9 +411,29 @@
             component: './portal/Tag',
             hideInMenu: true,
             access: 'rbac',
-          }
-        ]
-      }
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'app',
+    path: '/app',
+    routes: [
+      {
+        path: './',
+        redirect: '/app/list',
+      },
+      {
+        path: '/app/list',
+        component: './app/List',
+        access: 'rbac',
+      },
+      {
+        path: '/app/page/:appId',
+        component: './app/Page',
+        access: 'rbac',
+      },
     ],
   },
   {
