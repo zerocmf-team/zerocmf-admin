@@ -7,8 +7,14 @@ export async function login(params: any) {
   });
 }
 
+export async function loginOut(id: number) {
+  return authRequest(`/api/v1/user/admin/account/logout/${id}`, {
+    method: 'GET',
+  });
+}
+
 export async function currentUser() {
-  return authRequest('/api/v1/user/current_user');
+  return authRequest('/api/v1/user/admin/account/current_user');
 }
 
 export async function getDatas(params: any) {
@@ -42,13 +48,13 @@ export async function editData(id: any, data: any) {
 export async function editAccount(id: any, data: any = {}) {
   return authRequest(`/api/v1/user/admin/account/${id}`, {
     method: 'POST',
-    data
+    data,
   });
 }
 
 export async function deleteAccount(id: any, data: any = {}) {
   return authRequest(`/api/v1/user/admin/account/${id}`, {
     method: 'DELETE',
-    data
+    data,
   });
 }

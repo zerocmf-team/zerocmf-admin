@@ -155,7 +155,7 @@ const Category = () => {
     const result: any = await getPortalCategorys(params);
     let data = [];
     if (result.code === 1) {
-      data = result.data.data;
+      data = result.data;
     }
     return { data };
   };
@@ -164,7 +164,7 @@ const Category = () => {
       <ProTable
         columns={columns}
         rowKey="id"
-        pagination={{ pageSize: 10 }}
+        pagination={false}
         headerTitle="分类管理"
         request={getData}
         actionRef={ref}

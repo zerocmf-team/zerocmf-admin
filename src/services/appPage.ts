@@ -2,12 +2,9 @@ import { authRequest } from '@/utils/request';
 
 /* 获取页面列表 */
 export async function listPage(appId: number, params = {}) {
-  return authRequest('/api/v1/portal/admin/app_page', {
+  return authRequest(`/api/v1/portal/admin/app_page/all/${appId}`, {
     method: 'get',
-    params: {
-      ...params,
-      appId,
-    },
+    params,
   });
 }
 

@@ -12,7 +12,7 @@ import {
   Switch,
   Space,
 } from 'antd';
-import { AssetsInput, AssetsMultInput, EditorInput } from '@zerocmf/antd-form';
+import { AssetsInput, AssetsMultInput, EditorInput } from '@zerocmf/antd-form/es';
 import { history } from 'umi';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getPortalCategoryList } from '@/services/portalCategory';
@@ -51,7 +51,7 @@ const PostForm = ({ editId }: any) => {
     const categoryIds: any = [];
     if (category !== undefined) {
       category.forEach((element: any) => {
-        categoryIds.push(element.value);
+        categoryIds.push(`${element.value}`);
       });
     }
 
@@ -82,11 +82,12 @@ const PostForm = ({ editId }: any) => {
   const tProps = {
     treeDefaultExpandAll: true,
     value: treeValue,
+    fieldNames: { label: 'name', value: 'id', children: 'children' },
     treeData,
     multiple: true,
     treeCheckable: true,
-    treeCheckStrictly: true,
     allowClear: true,
+    labelInValue: true,
   };
 
   useEffect(() => {
@@ -107,10 +108,9 @@ const PostForm = ({ editId }: any) => {
           data.category.forEach((element: any) => {
             category.push({
               label: element.name,
-              value: element.id.toString(),
+              value: element.id,
             });
           });
-
           if (category.length > 0) {
             setTreeValue(category);
             data.category = category;
@@ -171,7 +171,13 @@ const PostForm = ({ editId }: any) => {
         name="category"
         rules={[{ required: true, message: '分类不能为空!' }]}
       >
-        <TreeSelect dropdownStyle={{ maxHeight: 400, overflow: 'auto' }} {...tProps} />
+        <TreeSelect
+          onChange={(e) => {
+            console.log('111', e);
+          }}
+          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+          {...tProps}
+        />
       </Form.Item>
 
       <Form.Item
@@ -250,24 +256,20 @@ const PostForm = ({ editId }: any) => {
         <Form.List name="extends">
           {(fields, { add, remove }) => (
             <>
-              {fields.map((field: any) => (
+              {fields.map((field: any, i) => (
                 <Space
                   key={field.key}
                   style={{ display: 'flex', marginBottom: 8 }}
                   align="baseline"
                 >
                   <Form.Item
-                    {...field}
                     name={[field.name, 'key']}
-                    fieldKey={[field.fieldKey, 'key']}
                     rules={[{ required: true, message: 'Missing key' }]}
                   >
                     <Input placeholder="key" />
                   </Form.Item>
                   <Form.Item
-                    {...field}
                     name={[field.name, 'value']}
-                    fieldKey={[field.fieldKey, 'value']}
                     rules={[{ required: true, message: 'Missing value' }]}
                   >
                     <Input placeholder="value" />

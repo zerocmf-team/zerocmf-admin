@@ -67,19 +67,21 @@ const Index = () => {
       dataIndex: 'post_title',
       key: 'post_title',
       width: 100,
+      order: 4,
     },
     {
       title: '分类',
       dataIndex: 'category',
       key: 'category',
       width: 100,
+      order: 5,
       renderFormItem: (
         item: any,
         { type, defaultRender, formItemProps, fieldProps, ...rest }: any,
         form: any,
       ) => (
         <TreeSelect
-          fieldNames={{ label: 'name', value: 'value', children: 'children' }}
+          fieldNames={{ label: 'name', value: 'id', children: 'children' }}
           treeData={category}
         />
       ),
@@ -131,7 +133,7 @@ const Index = () => {
       dataIndex: 'post_status',
       key: 'post_status',
       initialValue: 'enable',
-      order: '5',
+      order: '3',
       width: 100,
       valueEnum: {
         all: {

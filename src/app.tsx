@@ -76,8 +76,14 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
-      return msg.data;
+      const res = await queryCurrentUser();
+      if (res.code != 1) {
+        console.log('res', res);
+        message.error('用户身份已失效!');
+        history.push(loginPath);
+        return;
+      }
+      return res.data;
     } catch (error) {
       history.push(loginPath);
     }
@@ -187,11 +193,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
 
 const authHeaderInterceptor = (url: string, options: RequestConfig) => {
   if (options.token) {
-    let token: any = localStorage.getItem('token');
+    const token: any = localStorage.getItem('token');
     if (token) {
-      token = JSON.parse(token);
+      // token = JSON.parse(token);
       options.headers = {
-        Authorization: `Bearer ${token.access_token}`,
+        Authorization: `Bearer ${token}`,
       };
     } else {
       history.push(loginPath);
@@ -210,6 +216,11 @@ export const request: RequestConfig = {
     if (response && response.status) {
       const errorText = codeMessage[response.status] || response.statusText;
       const { status, url } = response;
+
+      if (status == 401) {
+        history.push('/user/login');
+      }
+
       notification.error({
         message: `请求错误 ${status}: ${url}`,
         description: errorText,

@@ -22,14 +22,14 @@ import {
 } from '@/services/navItem';
 import { useImmer } from 'use-immer';
 
-const { Option, OptGroup } = Select;
+const { Option } = Select;
 
 const getHref = (params: any) => {
   let schame = '';
   let url = '';
   const record = { ...params };
-  const regex: any = /^(http:\/\/)?([^\/s]*)/.exec(record.href);
-  if (regex.length > 2) {
+  const regex: any = /^(http|https)?:\/\/([^/:]+)(:\d*)?/.exec(record.href);
+  if (regex?.length > 2) {
     schame = regex[1];
     url = regex[2];
   }
@@ -43,7 +43,7 @@ const getHref = (params: any) => {
     record.href_type = 0;
     record.href = {
       label: record.name,
-      value: record.url,
+      value: params.href,
     };
   }
   return record;
@@ -57,74 +57,6 @@ const getHref = (params: any) => {
 const ModalNavItem: any = forwardRef((props: any, ref) => {
   const { onSave } = props;
   const [form] = Form.useForm();
-
-  const columns = [
-    {
-      title: '排序',
-      dataIndex: 'list_order',
-      key: 'list_order',
-    },
-    {
-      title: 'ID',
-      width: 50,
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: '菜单名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '跳转地址',
-      dataIndex: 'href',
-      key: 'href',
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-    },
-    {
-      title: '操作',
-      dataIndex: 'action',
-      key: 'action',
-      render: (text: any, record: any, index: number) => (
-        <Space size="middle">
-          <a
-            onClick={() => {
-              form.setFieldsValue({
-                parent_id: record.id,
-              });
-            }}
-          >
-            添加子菜单
-          </a>
-          <a
-            onClick={() => {
-              setState((draft: any) => {
-                draft.formFields = record;
-              });
-              const temp = getHref(record);
-              setTimeout(() => {
-                form.setFieldsValue(temp);
-              }, 50);
-            }}
-          >
-            编辑
-          </a>
-          <a
-            className="ant-typography ant-typography-danger"
-            onClick={() => {
-              deleteNavItem(record.id);
-            }}
-          >
-            删除
-          </a>
-        </Space>
-      ),
-    },
-  ];
 
   const defaultState: any = {
     title: '操作导航',
@@ -153,10 +85,7 @@ const ModalNavItem: any = forwardRef((props: any, ref) => {
       return;
     }
     const { navId, navItems } = result?.data;
-    const { onValueChange } = state;
-    if (onValueChange) {
-      onValueChange({ navId, value: navItems });
-    }
+
     const parentRes = await navItemOptions(navId);
     if (parentRes.code === 0) {
       message.error(parentRes.msg);
@@ -265,15 +194,85 @@ const ModalNavItem: any = forwardRef((props: any, ref) => {
     closeForm();
   };
 
+  const columns = [
+    {
+      title: '排序',
+      dataIndex: 'list_order',
+      key: 'list_order',
+    },
+    {
+      title: 'ID',
+      width: 50,
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: '菜单名称',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '跳转地址',
+      dataIndex: 'href',
+      key: 'href',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      key: 'action',
+      render: (text: any, record: any) => (
+        <Space size="middle">
+          <a
+            onClick={() => {
+              form.setFieldsValue({
+                parent_id: record.id,
+              });
+              showForm();
+            }}
+          >
+            添加子菜单
+          </a>
+          <a
+            onClick={() => {
+              setState((draft: any) => {
+                draft.formVisible = true;
+                draft.formFields = record;
+              });
+              const temp = getHref(record);
+              setTimeout(() => {
+                form.setFieldsValue(temp);
+              }, 50);
+            }}
+          >
+            编辑
+          </a>
+          <a
+            className="ant-typography ant-typography-danger"
+            onClick={() => {
+              deleteNavItem(record.id);
+            }}
+          >
+            删除
+          </a>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <>
       <Modal
+        destroyOnClose
         centered
         title={state.formTitle}
         open={state.formVisible}
         onCancel={closeForm}
         onOk={FormSubmit}
-        destroyOnClose
       >
         <Form
           form={form}
@@ -315,6 +314,7 @@ const ModalNavItem: any = forwardRef((props: any, ref) => {
 
           <Form.Item label="地址" shouldUpdate>
             {() => {
+              const treeValue = form.getFieldValue('href');
               return (
                 <Form.Item
                   noStyle
@@ -339,25 +339,22 @@ const ModalNavItem: any = forwardRef((props: any, ref) => {
                       </Form.Item>
                     </Input.Group>
                   ) : (
-                    <Select
+                    <TreeSelect
+                      value={treeValue}
+                      treeData={state.urlsData}
                       labelInValue
                       onChange={(e: any) => {
+                        const { label, value } = e;
                         form.setFieldsValue({
                           name: e.label,
+                          href: {
+                            label,
+                            value,
+                          },
                         });
                       }}
                       placeholder="请选择"
-                    >
-                      {state.urlsData.map((options: any, index: number) => (
-                        <OptGroup key={index} label={options.label}>
-                          {options?.options.map((option: any, oi: number) => (
-                            <Option key={`${index}-${oi}`} value={option.value}>
-                              {option.label}
-                            </Option>
-                          ))}
-                        </OptGroup>
-                      ))}
-                    </Select>
+                    />
                   )}
                 </Form.Item>
               );

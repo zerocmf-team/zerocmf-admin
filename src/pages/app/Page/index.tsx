@@ -79,7 +79,13 @@ export default (props: any) => {
       key: 'option',
       valueType: 'option',
 
-      render: (text, record, index) => {
+      render: (text, record) => {
+        const {
+          editor: { debug = false, host = '' },
+        } = window as any;
+
+        const _debug = debug ? '&debug' : '';
+
         if (record.isHome == 1) {
           return (
             <>
@@ -94,7 +100,7 @@ export default (props: any) => {
               <Divider type="vertical" />
               <a
                 target="_blank"
-                href={`http://localhost:5556?debug&pageId=${record.id}`}
+                href={`${host}/?appId=${appId}&pageId=${record.id}${_debug}`}
                 key="design"
                 rel="noreferrer"
               >
@@ -119,10 +125,10 @@ export default (props: any) => {
             </a>
             <Divider type="vertical" />
             <a
-              onClick={() => {
-                window.location.href = `http://localhost:5556?debug&pageId=${record.id}`;
-              }}
+              target="_blank"
+              href={`${host}/?appId=${appId}&pageId=${record.id}${_debug}`}
               key="design"
+              rel="noreferrer"
             >
               设计
             </a>
@@ -157,6 +163,7 @@ export default (props: any) => {
           collapsed: false,
         }}
         request={async (params) => {
+          params.isPublic = 0;
           const res = await fetchData(params);
           if (res) {
             return {

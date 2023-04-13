@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
 import { login } from '@/services/user';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+// import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -62,7 +62,7 @@ const Login: React.FC = () => {
         message.success(defaultLoginSuccessMessage);
 
         // 存入缓存
-        localStorage.setItem('token', JSON.stringify(msg.data));
+        localStorage.setItem('token', msg.data);
 
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
@@ -97,7 +97,7 @@ const Login: React.FC = () => {
           initialValues={{
             autoLogin: true,
           }}
-          actions={[
+          /* actions={[
             <FormattedMessage
               key="loginWith"
               id="pages.login.loginWith"
@@ -106,7 +106,7 @@ const Login: React.FC = () => {
             <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.icon} />,
             <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.icon} />,
             <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
-          ]}
+          ]} */
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}
@@ -119,13 +119,13 @@ const Login: React.FC = () => {
                 defaultMessage: '账户密码登录',
               })}
             />
-            <Tabs.TabPane
+            {/* <Tabs.TabPane
               key="mobile"
               tab={intl.formatMessage({
                 id: 'pages.login.phoneLogin.tab',
                 defaultMessage: '手机号登录',
               })}
-            />
+            /> */}
           </Tabs>
 
           {code == 0 && type === 'account' && <LoginMessage content={msg} />}
