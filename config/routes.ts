@@ -417,22 +417,43 @@
     ],
   },
   {
-    name: 'app',
-    path: '/app',
+    name: 'apps',
+    path: '/apps',
     routes: [
       {
-        path: './',
-        redirect: '/app/list',
+        name: 'form',
+        path: '/apps/form',
+        routes: [
+          {
+            path: './',
+            redirect: '/apps/form/list',
+          },
+          {
+            path: '/apps/form/list',
+            component: './apps/form/List',
+            access: 'rbac',
+          },
+        ],
       },
       {
-        path: '/app/list',
-        component: './app/List',
-        access: 'rbac',
-      },
-      {
-        path: '/app/page/:appId',
-        component: './app/Page',
-        access: 'rbac',
+        name: 'app',
+        path: '/apps/app',
+        routes: [
+          {
+            path: './',
+            redirect: '/apps/app/list',
+          },
+          {
+            path: '/apps/app/list',
+            component: './apps/app/List',
+            access: 'rbac',
+          },
+          {
+            path: '/apps/app/page/:appId',
+            component: './apps/app/Page',
+            access: 'rbac',
+          },
+        ],
       },
     ],
   },

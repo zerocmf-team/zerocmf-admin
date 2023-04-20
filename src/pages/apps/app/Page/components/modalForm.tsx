@@ -6,10 +6,11 @@ import {
 } from '@ant-design/pro-components';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { addPage, editPage } from '@/services/appPage';
-import { message } from 'antd';
+import { message, Form } from 'antd';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import { useImmer } from 'use-immer';
-import FormItem from 'antd/es/form/FormItem';
+
+const FormItem = Form.Item;
 
 export default forwardRef((props: any, ref) => {
   const { children, onOpenChange, onFinish, appId } = props;

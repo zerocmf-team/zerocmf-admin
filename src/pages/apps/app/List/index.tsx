@@ -80,7 +80,7 @@ const List = () => {
                   <Tooltip key="page" title="管理页面">
                     <AppstoreOutlined
                       onClick={() => {
-                        history.push(`/app/page/${item.id}`);
+                        history.push(`/apps/app/page/${item.id}`);
                       }}
                     />
                   </Tooltip>,

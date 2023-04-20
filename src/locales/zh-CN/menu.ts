@@ -102,7 +102,10 @@ export default {
   'menu.portal.tag': '标签管理',
   'menu.portal.tag.list': '标签列表',
 
-  'menu.app': '应用管理',
-  'menu.app.list': '应用列表',
-  'menu.app.page': '页面列表',
+  'menu.apps': '应用管理',
+  'menu.apps.app': '渠道',
+  'menu.apps.app.list': '应用',
+  'menu.apps.app.page': '页面',
+  'menu.apps.form': '表单',
+  'menu.apps.form.list': '列表',
 };

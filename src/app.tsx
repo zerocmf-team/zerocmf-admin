@@ -182,7 +182,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
             setInitialState((s: any) => ({ ...s, menus: result.data }));
             return result.data;
           }
-          message.error(result.msg);
+
+          if (result.msg) {
+            message.error(result.msg);
+          }
         }
       },
     },

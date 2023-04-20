@@ -1,12 +1,17 @@
 import { PageContainer } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Divider, Empty, message, Typography } from 'antd';
+import { Badge, Button, Divider, Empty, message, Typography } from 'antd';
 import ModalForm from './components/modalForm';
 import { useRef } from 'react';
 import { listPage } from '@/services/appPage';
 
 const { Text } = Typography;
+
+const statusEnum = {
+  1: <Badge status="success" text="启用" />,
+  0: <Badge status="default" text="禁用" />,
+};
 
 export default (props: any) => {
   const modalRef = useRef<any>();
@@ -38,17 +43,19 @@ export default (props: any) => {
       title: '页面类型',
       width: 80,
       dataIndex: 'type',
+      search: false,
     },
     {
       title: '排序',
       width: 100,
       dataIndex: 'type',
+      search: false,
     },
     {
       title: '创建时间',
       width: 100,
       key: 'since',
-      hideInSearch: true,
+      search: false,
       dataIndex: 'createdAt',
       valueType: 'date',
     },
@@ -56,7 +63,7 @@ export default (props: any) => {
       title: '更新时间',
       width: 100,
       key: 'since',
-      hideInSearch: true,
+      search: false,
       dataIndex: 'updateAt',
       valueType: 'date',
     },
@@ -66,11 +73,13 @@ export default (props: any) => {
       dataIndex: 'status',
       initialValue: 'all',
       valueEnum: {
-        all: { text: '全部', status: 'Default' },
-        close: { text: '关闭', status: 'Default' },
-        running: { text: '运行中', status: 'Processing' },
-        online: { text: '已上线', status: 'Success' },
-        error: { text: '异常', status: 'Error' },
+        all: { text: '全部', status: 'all' },
+        enabled: { text: '启用', status: 'Success' },
+        disabled: { text: '禁用', status: 'Default' },
+      },
+      render: (_, record: any) => {
+        const { status } = record;
+        return statusEnum[status];
       },
     },
     {
