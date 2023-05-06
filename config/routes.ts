@@ -438,6 +438,7 @@
       {
         name: 'app',
         path: '/apps/app',
+        access: 'rbac',
         routes: [
           {
             path: './',

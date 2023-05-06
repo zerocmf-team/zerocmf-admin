@@ -13,6 +13,12 @@ const statusEnum = {
   0: <Badge status="default" text="禁用" />,
 };
 
+const STATUS = {
+  all: '',
+  enabled: 1,
+  disabled: 0,
+};
+
 export default (props: any) => {
   const modalRef = useRef<any>();
   const { match = {} } = props;
@@ -167,12 +173,9 @@ export default (props: any) => {
         pagination={{
           showQuickJumper: true,
         }}
-        search={{
-          optionRender: false,
-          collapsed: false,
-        }}
         request={async (params) => {
           params.isPublic = 0;
+          params.status = STATUS[params.status];
           const res = await fetchData(params);
           if (res) {
             return {

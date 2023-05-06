@@ -11,6 +11,12 @@ const statusEnum = {
   0: <Badge status="default" text="禁用" />,
 };
 
+const STATUS = {
+  all: '',
+  enabled: 1,
+  disabled: 0,
+};
+
 export default () => {
   const modalRef = useRef<any>();
   const ref = useRef<any>();
@@ -124,11 +130,8 @@ export default () => {
         pagination={{
           showQuickJumper: true,
         }}
-        search={{
-          optionRender: false,
-          collapsed: false,
-        }}
         request={async (params) => {
+          params.status = STATUS[params.status];
           const res = await fetchData(params);
           if (res) {
             return {
@@ -144,7 +147,6 @@ export default () => {
             success: false,
           };
         }}
-        dateFormatter="string"
         headerTitle="表单列表"
         toolBarRender={() => [
           <Button

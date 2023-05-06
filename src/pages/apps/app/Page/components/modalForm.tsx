@@ -78,7 +78,7 @@ export default forwardRef((props: any, ref) => {
         let res;
         const { id = 0 } = state;
         if (id > 0) {
-          res = await editPage(id, values);
+          res = await editPage(id, { ...values, appId: Number(appId) });
         } else {
           res = await addPage(Number(appId), values);
         }
