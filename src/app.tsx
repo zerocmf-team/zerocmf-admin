@@ -54,12 +54,16 @@ const Icon = (props: any) => {
   );
 };
 
-const loopMenuItem: any = (menus: MenuDataItem[] | { icon: any; children: any }[]) => {
-  return menus.map(({ icon = '', children, ...item }) => {
+const loopMenuItem: any = (
+  menus: MenuDataItem[] | { icon: any; children: any }[],
+  siteId: string,
+) => {
+  return menus.map(({ icon = '', children, ...item }: any) => {
+    item.path = item.path.replaceAll(':siteId', siteId);
     return {
       ...item,
       icon: <Icon icon={icon} />,
-      children: children && loopMenuItem(children),
+      children: children && loopMenuItem(children, siteId),
     };
   });
 };
@@ -69,16 +73,15 @@ const loopMenuItem: any = (menus: MenuDataItem[] | { icon: any; children: any }[
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: any;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<any | undefined>;
   fetchMenus?: () => any;
 }> {
   const fetchUserInfo = async () => {
     try {
       const res = await queryCurrentUser();
       if (res.code != 1) {
-        console.log('res', res);
         message.error('用户身份已失效!');
         history.push(loginPath);
         return;
@@ -113,6 +116,14 @@ export async function getInitialState(): Promise<{
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: any) => {
   return {
     rightContentRender: () => <RightContent />,
+    headerRender: (props: any, defaultDom: any) => {
+      return defaultDom;
+    },
+    onMenuHeaderClick: () => {
+      const siteId = initialState?.site?.siteId || '';
+      const href = siteId ? `/${siteId}/settings/websites` : '/';
+      history.push(href);
+    },
     disableContentMargin: false,
     waterMarkProps: {
       content: false,
@@ -166,11 +177,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
     menu: {
       params: {
         userId: initialState?.currentUser?.id,
+        siteId: initialState?.site?.siteId,
       },
       request: async (params: any = {}) => {
         // initialState.currentUser 中包含了所有用户信息
-        const { userId } = params;
-        if (userId) {
+        const { userId, siteId } = params;
+        if (userId && siteId && history.location.pathname !== '/workspace') {
           const result: any = await getAdminMenu();
           if (result.code === 1) {
             //  重定向到自己可访问的第一路由
@@ -189,7 +201,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
         }
       },
     },
-    menuDataRender: (menuData: MenuDataItem[]) => loopMenuItem(menuData),
+    menuDataRender: (menuData: MenuDataItem[]) =>
+      loopMenuItem(menuData, initialState?.site?.siteId),
     ...initialState?.settings,
   };
 };
@@ -212,8 +225,22 @@ const authHeaderInterceptor = (url: string, options: RequestConfig) => {
   };
 };
 
+const siteInterceptor = (url: string, options: RequestConfig) => {
+  const { pathname } = location;
+  const patten = new RegExp('(?<=^/)[0-9]+');
+  const result: any = patten.exec(pathname);
+  if (result) {
+    const siteId = result[0];
+    (options as any).params.siteId = siteId;
+  }
+  return {
+    url,
+    options,
+  };
+};
+
 export const request: RequestConfig = {
-  requestInterceptors: [authHeaderInterceptor],
+  requestInterceptors: [authHeaderInterceptor, siteInterceptor],
   errorHandler(error) {
     const { response } = error;
     if (response && response.status) {

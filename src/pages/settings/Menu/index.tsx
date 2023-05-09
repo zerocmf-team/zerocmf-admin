@@ -2,7 +2,7 @@ import type { FormInstance, InputRef } from 'antd';
 import { Tag } from 'antd';
 import { Popconfirm, Space } from 'antd';
 import { Button, Card, Form, Input, message, Table } from 'antd';
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import ModalForm from './components/modalForm';
@@ -151,9 +151,10 @@ const Menu = () => {
     },
   };
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     setLoading(true);
     const res = await getAllAdminMenu();
+    console.log('res', res);
     if (res.code == 1) {
       setState((draft: any) => {
         draft.data = res.data;
@@ -162,7 +163,7 @@ const Menu = () => {
       message.error(res.msg);
     }
     setLoading(false);
-  }, [setState]);
+  };
 
   const fetchDelete = async (id: number) => {
     const res = await deleteMenu(id);
@@ -272,7 +273,7 @@ const Menu = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   const onFinish = () => {
     fetchData();

@@ -14,8 +14,12 @@ export async function loginOut(id: number) {
 }
 
 export async function currentUser() {
-  return authRequest('/api/v1/user/admin/account/current_user');
+  return authRequest('/api/current_user');
 }
+
+// export async function currentUser() {
+//   return authRequest('/api/v1/user/admin/account/current_user');
+// }
 
 export async function getDatas(params: any) {
   return authRequest('/api/v1/user/admin/account', {

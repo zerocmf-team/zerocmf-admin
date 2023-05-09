@@ -5,7 +5,7 @@ import { authRequest } from '@/utils/request';
  *@Date: 2022-11-17 16:16:41
  *@Description: 当前当前用户所授权的路由
  */
-export async function getAdminMenu(params = []) {
+export async function getAdminMenu(params = {}) {
   return authRequest('/api/v1/admin/admin_menu', {
     method: 'get',
     params,

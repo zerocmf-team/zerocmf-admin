@@ -1,0 +1,68 @@
+.layout {
+  :global {
+    .ant-layout-content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .main {
+    flex: 1;
+    @media (min-width: 992px) {
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1140px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 1320px;
+        margin: 0 auto;
+      }
+    }
+
+    .card {
+      height: 201px;
+
+      :global {
+        .ant-card-meta-title > a {
+          display: inline-block;
+          max-width: 100%;
+          color: rgba(0, 0, 0, 0.85);
+        }
+      }
+
+      .item {
+        display: -webkit-box;
+        height: 40px;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+
+    .pagination {
+      margin-top: 20px;
+      text-align: right;
+    }
+  }
+
+  .footer {
+    text-align: center;
+  }
+}
+
+.newButton {
+  width: 100%;
+  height: 201px;
+  color: rgba(0, 0, 0, 0.45);
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(217, 217, 217);
+}

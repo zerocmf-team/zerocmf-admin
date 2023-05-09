@@ -34,7 +34,7 @@ const LoginMessage: React.FC<{
 );
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<any>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: any) => {
     try {
       // 登录
       const msg: any = await login({ ...values, type });
@@ -108,7 +108,7 @@ const Login: React.FC = () => {
             <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.icon} />,
           ]} */
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as any);
           }}
         >
           <Tabs activeKey={type} onChange={setType}>

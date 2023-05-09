@@ -21,7 +21,7 @@ const tabList = [
   },
 ];
 
-const Websites = () => {
+const Websites = (props: any) => {
   const [key, setKey] = useState('tab1');
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});

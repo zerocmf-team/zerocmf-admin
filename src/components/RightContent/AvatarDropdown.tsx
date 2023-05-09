@@ -1,5 +1,5 @@
 import { loginOut } from '@/services/user';
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import type { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { stringify } from 'querystring';
@@ -17,9 +17,10 @@ export type GlobalHeaderRightProps = {
  * 退出登录，并且将当前的 url 保存
  */
 const signOut = async (userId: any) => {
-  await loginOut(userId);
+  // await loginOut(userId);
   const { query = {}, search, pathname } = history.location;
   const { redirect } = query;
+  localStorage.removeItem('token');
   // Note: There may be security issues, please note
   if (window.location.pathname !== '/user/login' && !redirect) {
     history.replace({
@@ -41,6 +42,9 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         const userId = initialState.currentUser.id;
         setInitialState((s: any) => ({ ...s, currentUser: undefined }));
         signOut(userId);
+        return;
+      } else if (key === 'workspace') {
+        history.push('/workspace');
         return;
       }
       history.push(`/account/${key}`);
@@ -70,11 +74,16 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     return loading;
   }
 
-  const { user_login: userLogin, avatar } = currentUser;
+  const { userLogin, avatar } = currentUser;
 
   const menuItems: ItemType[] = [
     ...(menu
       ? [
+          {
+            key: 'workspace',
+            icon: <AppstoreOutlined />,
+            label: '切换站点',
+          },
           {
             key: 'center',
             icon: <UserOutlined />,
@@ -99,7 +108,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
 
   const getAvatar = (url: string) => {
     let avatarUrl = url;
-    if (url == '') {
+    if (!url) {
       avatarUrl = '/assets/images/avatar.png';
     }
 
