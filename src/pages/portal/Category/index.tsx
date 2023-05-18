@@ -1,13 +1,13 @@
 import { useRef } from 'react';
 import { Button, Popconfirm, Divider, message, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { history } from 'umi';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import {
-  getPortalCategorys,
+  getPortalCategories,
   deletePortalCategory,
   updatePortalCategory,
 } from '@/services/portalCategory';
+import { historyPush } from '@/utils/utils';
 
 const statusObj = { all: '', enable: 1, disable: 0 };
 
@@ -109,7 +109,7 @@ const Category = () => {
         <>
           <a
             onClick={() => {
-              history.push(`/portal/category/add?pid=${item.id}`);
+              historyPush(`/portal/category/add?pid=${item.id}`);
             }}
           >
             添加子分类
@@ -117,7 +117,7 @@ const Category = () => {
           <Divider type="vertical" />
           <a
             onClick={() => {
-              history.push(`/portal/category/edit/${item.id}`);
+              historyPush(`/portal/category/edit/${item.id}`);
             }}
           >
             编辑
@@ -152,7 +152,7 @@ const Category = () => {
 
   const getData = async (params: any) => {
     params.status = statusObj[params.status];
-    const result: any = await getPortalCategorys(params);
+    const result: any = await getPortalCategories(params);
     let data = [];
     if (result.code === 1) {
       data = result.data;
@@ -176,7 +176,7 @@ const Category = () => {
             key="add"
             type="primary"
             onClick={() => {
-              history.push('/portal/category/add');
+              historyPush('/portal/category/add');
             }}
           >
             <PlusOutlined /> 新建

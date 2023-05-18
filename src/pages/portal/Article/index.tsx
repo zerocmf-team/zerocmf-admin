@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getPortals, deletePortal, deletePortals } from '@/services/portal';
 import { getPortalCategoryList } from '@/services/portalCategory';
-import { history } from 'umi';
+import { historyPush } from '@/utils/utils';
 
 const statusObj = { all: '', enable: 1, disable: 0 };
 const statusLabels = ['草稿', '发布'];
@@ -159,7 +159,7 @@ const Index = () => {
         <>
           <a
             onClick={() => {
-              history.push(`/portal/article/edit/${item.id}`);
+              historyPush(`/portal/article/edit/${item.id}`);
             }}
           >
             编辑
@@ -214,7 +214,7 @@ const Index = () => {
             key="add"
             type="primary"
             onClick={() => {
-              history.push('/portal/article/add');
+              historyPush('/portal/article/add');
             }}
           >
             <PlusOutlined /> 新建

@@ -45,7 +45,7 @@ const Detail = (props: any) => {
     },
   });
 
-  const featchData = async () => {
+  const fetchData = async () => {
     const res = await getMobileLogin();
     if (res.code == 1) {
       form.setFieldsValue(res.data);
@@ -53,7 +53,7 @@ const Detail = (props: any) => {
   };
 
   useEffect(() => {
-    featchData();
+    fetchData();
   }, []);
 
   return (

@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Card, Form, Row, Col, Button, message, Tabs } from 'antd';
-import { history } from 'umi';
 import { PageContainer } from '@ant-design/pro-components';
 import { addPortalCategory } from '@/services/portalCategory';
 import Basic from './components/Basic';
 import Seo from './components/Seo';
 import Tpl from './components/Tpl';
+import { historyPush } from '@/utils/utils';
 
 const buttonWrapperCol = {
   xs: {
@@ -55,7 +55,7 @@ const Add = (props: any) => {
       const result: any = await addPortalCategory(formData);
       if (result.code === 1) {
         message.success(result.msg);
-        history.push(`/portal/category/edit/${result.data.id}`);
+        historyPush(`/portal/category/edit/${result.data.id}`);
       } else {
         message.error(result.msg);
       }
@@ -65,7 +65,7 @@ const Add = (props: any) => {
   return (
     <PageContainer
       onBack={() => {
-        history.push('/portal/category');
+        historyPush('/portal/category');
       }}
     >
       <Card bodyStyle={{ padding: '0 24px 24px' }}>

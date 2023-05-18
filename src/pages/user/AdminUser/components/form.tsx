@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Form, Input, Checkbox, Button, Card } from 'antd';
 import { getRoles } from '@/services/role';
-import { history } from 'umi';
+import { historyPush } from '@/utils/utils';
 
 const layout = {
   labelCol: {
@@ -21,7 +21,7 @@ const UserForm = (props: any) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    async function featchData() {
+    async function fetchData() {
       const result = await getRoles({ current: 1, pageSize: 999 });
 
       if (result.code === 1) {
@@ -35,7 +35,7 @@ const UserForm = (props: any) => {
         setRadioData(options);
       }
     }
-    featchData();
+    fetchData();
   }, []);
 
   const fetchData = async () => {
@@ -110,7 +110,7 @@ const UserForm = (props: any) => {
           <Button htmlType="submit" className="mr-1" type="primary">
             确定
           </Button>
-          <Button onClick={() => history.push('/account/user/list')}>返回</Button>
+          <Button onClick={() => historyPush('/account/user/list')}>返回</Button>
         </Form.Item>
       </Form>
     </Card>

@@ -2,8 +2,8 @@ import { MobileOutlined, WechatOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { Card, List } from 'antd';
 import classnames from 'classnames';
-import { history } from 'umi';
 import styles from './index.less';
+import { historyPush } from '@/utils/utils';
 
 const BindingView: React.FC = () => {
   const getData = () => [
@@ -13,7 +13,7 @@ const BindingView: React.FC = () => {
       actions: [
         <a
           onClick={() => {
-            history.push('/settings/login/detail/mobile');
+            historyPush('/settings/login/detail/mobile');
           }}
           key="settings"
         >
@@ -28,7 +28,7 @@ const BindingView: React.FC = () => {
       actions: [
         <a
           onClick={() => {
-            history.push('/settings/login/detail/wxapp');
+            historyPush('/settings/login/detail/wxapp');
           }}
           key="settings"
         >

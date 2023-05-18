@@ -1,6 +1,6 @@
 import { authRequest } from '@/utils/request';
 
-export async function getPortalCategorys(params: any) {
+export async function getPortalCategories(params: any) {
   return authRequest('/api/v1/portal/admin/category', {
     method: 'GET',
     params,

@@ -1,6 +1,6 @@
 import { AppstoreOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
-import { Avatar, Card, Col, message, Row, Typography } from 'antd';
+import { Avatar, Button, Card, Col, message, Row, Typography } from 'antd';
 import ModalForm from './components/modalForm';
 import { useEffect, useRef } from 'react';
 import { list } from '@/services/app';
@@ -8,7 +8,7 @@ import { list } from '@/services/app';
 import styles from './index.less';
 import Tooltip from 'antd/es/tooltip';
 import { useImmer } from 'use-immer';
-import { history } from 'umi';
+import { historyPush } from '@/utils/utils';
 
 const { Meta } = Card;
 
@@ -52,21 +52,24 @@ const List = () => {
         }}
       />
       <Row gutter={[24, 24]}>
-        <Col span={6}>
-          <Card
-            onClick={() => {
-              modalRef.current.open();
-            }}
-            className={styles.add}
-          >
-            <PlusOutlined />
-            <span style={{ marginLeft: '8px' }}>新增应用</span>
-          </Card>
+        <Col xs={24} md={12} lg={6}>
+          <div className={styles.card}>
+            <Button
+              onClick={() => {
+                modalRef.current.open();
+              }}
+              type="dashed"
+              className={styles.newButton}
+            >
+              <PlusOutlined />
+              <span style={{ marginLeft: '8px' }}>新增渠道</span>
+            </Button>
+          </div>
         </Col>
 
         {state.data.map((item: any) => {
           return (
-            <Col key={item.id} span={6}>
+            <Col xs={24} md={12} lg={6} key={item.id}>
               <Card
                 className={styles.card}
                 actions={[
@@ -80,7 +83,7 @@ const List = () => {
                   <Tooltip key="page" title="管理页面">
                     <AppstoreOutlined
                       onClick={() => {
-                        history.push(`/apps/app/page/${item.id}`);
+                        historyPush(`/apps/app/page/${item.id}`);
                       }}
                     />
                   </Tooltip>,
@@ -92,7 +95,10 @@ const List = () => {
                 <Meta
                   className="item"
                   avatar={
-                    <Avatar src="https://oss.aliyuncs.com/aliyun_id_photo_bucket/default_handsome.jpg" />
+                    <Avatar
+                      size={48}
+                      src="https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png"
+                    />
                   }
                   title={item.name}
                   description={

@@ -20,7 +20,7 @@ const Basic = (props: any) => {
 
   const [treeData, setTreeData] = useState([]); // 编辑
   useEffect(() => {
-    const featchData = async () => {
+    const fetchData = async () => {
       const result: any = await getPortalCategoryList();
       if (result.code === 1) {
         const data: any = [
@@ -33,7 +33,7 @@ const Basic = (props: any) => {
         setTreeData(data);
       }
     };
-    featchData();
+    fetchData();
   }, []);
 
   return (

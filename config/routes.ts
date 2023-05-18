@@ -15,7 +15,7 @@
   },
   {
     path: '/',
-    // redirect: '/workspace',
+    redirect: '/workspace',
   },
   {
     name: 'workspace',
@@ -25,7 +25,7 @@
     component: './workspace',
   },
   {
-    path: '/:siteId',
+    path: '/:siteId/',
     component: '@/layouts/BasicLayout',
     routes: [
       {

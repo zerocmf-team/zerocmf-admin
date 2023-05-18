@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
-import { Link, history } from 'umi';
+import { Link } from 'umi';
 import { Button, Divider, message, Popconfirm, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getDatas, deleteAccount } from '@/services/user';
+import { historyPush } from '@/utils/utils';
 
 const { Text } = Typography;
 
@@ -132,7 +133,7 @@ const Index = () => {
             key="3"
             type="primary"
             onClick={() => {
-              history.push('/account/user/add');
+              historyPush('/account/user/add');
             }}
           >
             <PlusOutlined />

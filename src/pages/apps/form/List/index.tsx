@@ -5,6 +5,7 @@ import { Badge, Button, Divider, message, Typography } from 'antd';
 import ModalForm from './components/modalForm';
 import { useRef } from 'react';
 import { list } from '@/services/form';
+import { getSiteId } from '@/utils/utils';
 
 const statusEnum = {
   1: <Badge status="success" text="启用" />,
@@ -20,6 +21,7 @@ const STATUS = {
 export default () => {
   const modalRef = useRef<any>();
   const ref = useRef<any>();
+  const siteId = getSiteId();
 
   const fetchData = async (data = {}) => {
     const res = await list(data);
@@ -99,7 +101,7 @@ export default () => {
             <Divider type="vertical" />
             <a
               target="_blank"
-              href={`${host}/?scence=form&formId=${record.id}${_debug}`}
+              href={`${host}/?siteId=${siteId}&scene=form&formId=${record.id}${_debug}`}
               key="design"
               rel="noreferrer"
             >

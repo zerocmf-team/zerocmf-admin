@@ -26,6 +26,7 @@ import Footer from '@/components/Footer';
 import styles from './styles.less';
 import { useEffect, useState } from 'react';
 import { add, del, edit, list } from '@/services/workspace';
+import { historyPush } from '@/utils/utils';
 import { history } from 'umi';
 
 const { Paragraph } = Typography;
@@ -45,17 +46,23 @@ const SaveForm = (props: any) => {
       <ProFormText name="siteId" label="站点Id" hidden />
 
       <ProFormText
-        width="md"
         name="name"
         label="站点名称"
         tooltip="最长为 32 位"
         placeholder="请输入站点名称"
+        rules={[{ required: true, message: '站点名称不能为空' }]}
       />
 
-      <ProFormTextArea width="md" name="desc" label="站点描述" placeholder="请输入站点描述" />
+      <ProFormTextArea name="desc" label="站点描述" placeholder="请输入站点描述" />
 
       <ProFormText
-        width="md"
+        name="domain"
+        label="域名"
+        tooltip="绑定访问的域名"
+        placeholder="请输入绑定的域名"
+      />
+
+      <ProFormText
         name="dsn"
         label="数据源配置"
         tooltip="用于自定义配置数据库的连接字符串"
@@ -90,6 +97,15 @@ function Workspace() {
     data: [],
   });
 
+  const fetchData = async () => {
+    const res = await list();
+    if (res.code != 1) {
+      message.error(res.msg);
+      return;
+    }
+    setData(res.data);
+  };
+
   const saveData = async (params: any) => {
     params.status = params.status ? 1 : 0;
     let res;
@@ -104,20 +120,16 @@ function Workspace() {
       return false;
     }
 
-    const { index } = params;
-    const newData = { ...data };
-    newData.data[index] = { ...data.data[index], ...params, index };
-    setData(newData);
-    return true;
-  };
-
-  const fetchData = async () => {
-    const res = await list();
-    if (res.code != 1) {
-      message.error(res.msg);
-      return;
+    if (siteId) {
+      const { index } = params;
+      const newData = { ...data };
+      newData.data[index] = { ...data.data[index], ...params, index };
+      setData(newData);
+    } else {
+      fetchData();
     }
-    setData(res.data);
+
+    return true;
   };
 
   const deleteApp = async (item: any) => {
@@ -158,7 +170,7 @@ function Workspace() {
       <div className={styles.main}>
         <div className={styles.container}>
           <Row gutter={[24, 24]}>
-            <Col span={6}>
+            <Col xs={24} md={12} lg={6}>
               <div className={styles.card}>
                 <Button
                   onClick={() => {
@@ -174,7 +186,7 @@ function Workspace() {
             </Col>
             {data?.data?.map((item: any, i: number) => {
               return (
-                <Col key={item.siteId} span={6}>
+                <Col xs={24} md={12} lg={6} key={item.siteId}>
                   <Card
                     onClick={() => {
                       history.push(`/${item.siteId}/settings`);

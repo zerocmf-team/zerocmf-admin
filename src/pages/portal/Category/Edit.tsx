@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Card, Form, Row, Col, Button, message, Tabs } from 'antd';
-import { history } from 'umi';
 import { PageContainer } from '@ant-design/pro-components';
 import { updatePortalCategory, getPortalCategory } from '@/services/portalCategory';
 import Basic from './components/Basic';
 import Seo from './components/Seo';
 import Tpl from './components/Tpl';
+import { historyPush } from '@/utils/utils';
 
 const buttonWrapperCol = {
   xs: {
@@ -31,13 +31,13 @@ const Edit = (props: any) => {
 
   // 初始化获取编辑内容
   useEffect(() => {
-    const featchData = async () => {
+    const fetchData = async () => {
       const result: any = await getPortalCategory(id);
       if (result.code === 1) {
         form.setFieldsValue(result.data);
       }
     };
-    featchData();
+    fetchData();
   }, [form, id]);
 
   const onSubmit = async () => {
@@ -78,7 +78,7 @@ const Edit = (props: any) => {
   return (
     <PageContainer
       onBack={() => {
-        history.push('/portal/category');
+        historyPush('/portal/category');
       }}
     >
       <Card bodyStyle={{ padding: '0 24px 24px' }}>

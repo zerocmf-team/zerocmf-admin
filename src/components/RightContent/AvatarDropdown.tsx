@@ -21,6 +21,7 @@ const signOut = async (userId: any) => {
   const { query = {}, search, pathname } = history.location;
   const { redirect } = query;
   localStorage.removeItem('token');
+
   // Note: There may be security issues, please note
   if (window.location.pathname !== '/user/login' && !redirect) {
     history.replace({
@@ -34,13 +35,17 @@ const signOut = async (userId: any) => {
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   const { initialState, setInitialState } = useModel<any>('@@initialState');
-
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
       const { key } = event;
       if (key === 'logout') {
         const userId = initialState.currentUser.id;
-        setInitialState((s: any) => ({ ...s, currentUser: undefined }));
+        setInitialState((s: any) => ({
+          ...s,
+          currentUser: undefined,
+          userId: undefined,
+          site: undefined,
+        }));
         signOut(userId);
         return;
       } else if (key === 'workspace') {

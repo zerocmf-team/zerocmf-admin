@@ -15,7 +15,7 @@ const Index = (props: any) => {
   const intl = useIntl();
 
   useEffect(() => {
-    async function featchData() {
+    async function fetchData() {
       const result = await getAuthorizes();
       if (result.code === 1) {
         setTreeData(result.data);
@@ -35,7 +35,7 @@ const Index = (props: any) => {
       }
     }
 
-    featchData();
+    fetchData();
   }, [form, roleId]);
 
   const onCheck = (checkedKeys: any) => {

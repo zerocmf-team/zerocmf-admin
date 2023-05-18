@@ -27,7 +27,7 @@ const buttonWrapperCol = {
 
 const Wechat = () => {
   const [form] = Form.useForm();
-  const featchData = async () => {
+  const fetchData = async () => {
     const res = await getWxappLogin();
     if (res.code == 1) {
       form.setFieldsValue(res.data);
@@ -35,7 +35,7 @@ const Wechat = () => {
   };
 
   useEffect(() => {
-    featchData();
+    fetchData();
   }, []);
 
   return (

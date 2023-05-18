@@ -13,13 +13,13 @@ const Index = () => {
   const intl = useIntl();
 
   useEffect(() => {
-    async function featchData() {
+    async function fetchData() {
       const result = await getAuthorizes();
       if (result.code === 1) {
         setTreeData(result.data);
       }
     }
-    featchData();
+    fetchData();
   }, []);
 
   const [form] = Form.useForm();

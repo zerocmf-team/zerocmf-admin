@@ -1,14 +1,13 @@
-import React from 'react';
 import { Card } from 'antd';
-import { history } from 'umi';
 import { PageContainer } from '@ant-design/pro-components';
 import PostForm from './components/PostForm';
+import { historyPush } from '@/utils/utils';
 
 const Add = () => {
   return (
     <PageContainer
       onBack={() => {
-        history.push('/portal/page');
+        historyPush('/portal/page');
       }}
     >
       <Card>

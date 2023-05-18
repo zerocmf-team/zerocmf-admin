@@ -13,13 +13,13 @@ import {
   Space,
 } from 'antd';
 import { AssetsInput, AssetsMultInput, EditorInput } from '@zerocmf/antd-form/es';
-import { history } from 'umi';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { getPortalCategoryList } from '@/services/portalCategory';
 import { getPortal, addPortal, updatePortal } from '@/services/portal';
 import moment from 'moment';
 // import { getThemeFiles } from '@/services/themeFile';
 import { listPage } from '@/services/appPage';
+import { historyPush } from '@/utils/utils';
 
 const layout = {
   labelCol: {
@@ -71,7 +71,7 @@ const PostForm = ({ editId }: any) => {
 
     if (result.code === 1) {
       if (!editId) {
-        history.push(`/portal/article/edit/${result.data.id}`);
+        historyPush(`/portal/article/edit/${result.data.id}`);
       }
       message.success(result.msg);
       return;
@@ -91,15 +91,15 @@ const PostForm = ({ editId }: any) => {
   };
 
   useEffect(() => {
-    const featchData = async () => {
+    const fetchData = async () => {
       const result = await getPortalCategoryList();
       if (result.code === 1) {
         setTreeData(result.data);
       }
     };
-    featchData();
+    fetchData();
 
-    const featchPost = async () => {
+    const fetchPost = async () => {
       const result = await getPortal(editId);
       if (result.code === 1) {
         const { data } = result;
@@ -139,10 +139,10 @@ const PostForm = ({ editId }: any) => {
         setPost(data);
       }
     };
-    featchData();
+    fetchData();
 
     if (editId > 0) {
-      featchPost();
+      fetchPost();
     }
 
     const init = async () => {
@@ -256,7 +256,7 @@ const PostForm = ({ editId }: any) => {
         <Form.List name="extends">
           {(fields, { add, remove }) => (
             <>
-              {fields.map((field: any, i) => (
+              {fields.map((field: any) => (
                 <Space
                   key={field.key}
                   style={{ display: 'flex', marginBottom: 8 }}
@@ -317,7 +317,13 @@ const PostForm = ({ editId }: any) => {
           提交
         </Button>
 
-        <Button onClick={() => history.push('/portal/article/list')}>返回</Button>
+        <Button
+          onClick={() => {
+            historyPush('/portal/article/list');
+          }}
+        >
+          返回
+        </Button>
       </Form.Item>
     </Form>
   );

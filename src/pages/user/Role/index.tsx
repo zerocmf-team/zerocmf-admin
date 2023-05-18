@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
-import { history } from 'umi';
 import { Button, Divider, Popconfirm, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getRoles, deleteRole } from '@/services/role';
+import { historyPush } from '@/utils/utils';
 
 const Index = () => {
   const [total, setTotal] = useState(0);
@@ -82,7 +82,7 @@ const Index = () => {
               style={{ padding: 0 }}
               type="link"
               onClick={() => {
-                history.push(`/account/role/edit/${item.id}`);
+                historyPush(`/account/role/edit/${item.id}`);
               }}
             >
               编辑
@@ -137,7 +137,7 @@ const Index = () => {
             key="button"
             type="primary"
             onClick={() => {
-              history.push('/account/role/add');
+              historyPush('/account/role/add');
             }}
           >
             <PlusOutlined /> 新建

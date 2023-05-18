@@ -5,6 +5,7 @@ import { Badge, Button, Divider, Empty, message, Typography } from 'antd';
 import ModalForm from './components/modalForm';
 import { useRef } from 'react';
 import { listPage } from '@/services/appPage';
+import { getSiteId } from '@/utils/utils';
 
 const { Text } = Typography;
 
@@ -23,9 +24,8 @@ export default (props: any) => {
   const modalRef = useRef<any>();
   const { match = {} } = props;
   const { appId } = match?.params;
-
+  const siteId = getSiteId();
   const ref = useRef<any>();
-
   if (!appId) {
     return <Empty />;
   }
@@ -115,7 +115,7 @@ export default (props: any) => {
               <Divider type="vertical" />
               <a
                 target="_blank"
-                href={`${host}/?appId=${appId}&pageId=${record.id}${_debug}`}
+                href={`${host}/${siteId}?appId=${appId}&pageId=${record.id}${_debug}`}
                 key="design"
                 rel="noreferrer"
               >
@@ -141,7 +141,7 @@ export default (props: any) => {
             <Divider type="vertical" />
             <a
               target="_blank"
-              href={`${host}/?appId=${appId}&pageId=${record.id}${_debug}`}
+              href={`${host}?siteId=${siteId}&appId=${appId}&pageId=${record.id}${_debug}`}
               key="design"
               rel="noreferrer"
             >

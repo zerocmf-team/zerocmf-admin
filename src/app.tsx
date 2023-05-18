@@ -14,7 +14,7 @@ import { message } from 'antd';
 import 'antd/dist/antd.css';
 import '@zerocmf/antd-form/es/style.css';
 import { createRef } from 'react';
-import { findTreeFirst } from './utils/utils';
+import { findTreeFirst, getSiteId } from './utils/utils';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -182,6 +182,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
       request: async (params: any = {}) => {
         // initialState.currentUser 中包含了所有用户信息
         const { userId, siteId } = params;
+        console.log('params', params);
         if (userId && siteId && history.location.pathname !== '/workspace') {
           const result: any = await getAdminMenu();
           if (result.code === 1) {
@@ -226,11 +227,8 @@ const authHeaderInterceptor = (url: string, options: RequestConfig) => {
 };
 
 const siteInterceptor = (url: string, options: RequestConfig) => {
-  const { pathname } = location;
-  const patten = new RegExp('(?<=^/)[0-9]+');
-  const result: any = patten.exec(pathname);
-  if (result) {
-    const siteId = result[0];
+  const siteId = getSiteId();
+  if (siteId) {
     (options as any).params.siteId = siteId;
   }
   return {
@@ -242,6 +240,7 @@ const siteInterceptor = (url: string, options: RequestConfig) => {
 export const request: RequestConfig = {
   requestInterceptors: [authHeaderInterceptor, siteInterceptor],
   errorHandler(error) {
+    console.log('err', error);
     const { response } = error;
     if (response && response.status) {
       const errorText = codeMessage[response.status] || response.statusText;

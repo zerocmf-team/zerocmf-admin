@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Input, Button, Select, message, Radio } from 'antd';
 import { AssetsInput, AssetsMultInput, EditorInput } from '@zerocmf/antd-form';
-import { history } from 'umi';
 import { getPortal, addPortal, updatePortal } from '@/services/portal';
-
-import { getThemeFiles } from '@/services/themeFile';
 import { listPage } from '@/services/appPage';
+import { historyPush } from '@/utils/utils';
+import { history } from 'umi';
 
 const layout = {
   labelCol: {
@@ -46,7 +45,7 @@ const PostForm = ({ editId }: any) => {
     }
     if (result.code === 1) {
       if (!editId) {
-        history.push(`/portal/page/edit/${result.data.id}`);
+        historyPush(`/portal/page/edit/${result.data.id}`);
       }
       message.success(result.msg);
       return;
@@ -55,7 +54,7 @@ const PostForm = ({ editId }: any) => {
   };
 
   useEffect(() => {
-    const featchPost = async () => {
+    const fetchPost = async () => {
       const result = await getPortal(editId);
       if (result.code === 1) {
         const { data } = result;
@@ -84,7 +83,7 @@ const PostForm = ({ editId }: any) => {
     };
 
     if (editId > 0) {
-      featchPost();
+      fetchPost();
     }
 
     const init = async () => {

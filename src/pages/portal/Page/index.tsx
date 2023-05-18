@@ -3,7 +3,7 @@ import { Button, Popconfirm, Divider, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { getPortals, deletePortal, deletePortals } from '@/services/portal';
-import { history } from 'umi';
+import { historyPush } from '@/utils/utils';
 
 const statusObj = { enable: 1, disable: 0 };
 const status = ['停用', '启用'];
@@ -75,7 +75,7 @@ const Index = () => {
         <>
           <a
             onClick={() => {
-              history.push(`/portal/page/edit/${item.id}`);
+              historyPush(`/portal/page/edit/${item.id}`);
             }}
           >
             编辑
@@ -133,7 +133,7 @@ const Index = () => {
             key="add"
             type="primary"
             onClick={() => {
-              history.push('/portal/page/add');
+              historyPush('/portal/page/add');
             }}
           >
             <PlusOutlined /> 新建

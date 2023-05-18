@@ -1,3 +1,5 @@
+import { history } from 'umi';
+
 // treeToList
 export const treeToList = (arr, key = 'children') => {
   let list = [];
@@ -24,4 +26,24 @@ export const findTreeFirst = (arr = []) => {
     break;
   }
   return path;
+};
+
+export const getSiteId = () => {
+  const { pathname } = location;
+  const patten = new RegExp('/[0-9]+');
+  const res = patten.exec(pathname);
+  let siteId = '';
+  if (res?.length > 0) {
+    siteId = res[0]?.replaceAll('/', '');
+  }
+  return siteId;
+};
+
+export const historyPush = (url) => {
+  let newUrl = url;
+  const siteId = getSiteId();
+  if (siteId) {
+    newUrl = `/${siteId}${url}`;
+  }
+  history.push(newUrl);
 };
