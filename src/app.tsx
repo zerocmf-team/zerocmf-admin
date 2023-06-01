@@ -182,7 +182,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }: a
       request: async (params: any = {}) => {
         // initialState.currentUser 中包含了所有用户信息
         const { userId, siteId } = params;
-        console.log('params', params);
         if (userId && siteId && history.location.pathname !== '/workspace') {
           const result: any = await getAdminMenu();
           if (result.code === 1) {

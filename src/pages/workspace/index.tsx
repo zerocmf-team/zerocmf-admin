@@ -26,7 +26,7 @@ import Footer from '@/components/Footer';
 import styles from './styles.less';
 import { useEffect, useState } from 'react';
 import { add, del, edit, list } from '@/services/workspace';
-import { historyPush } from '@/utils/utils';
+
 import { history } from 'umi';
 
 const { Paragraph } = Typography;
